@@ -56,7 +56,7 @@ export function RoundSummary({
         {/* Header row */}
         <div className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-x-3 px-3 py-1.5 text-[10px] text-gray-400 uppercase tracking-wider border-b border-gray-100">
           <span className="text-left">Player</span>
-          <span>Dutch</span>
+          <span>Center</span>
           <span>Blitz</span>
           <span>Net</span>
           <span>Total</span>

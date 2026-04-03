@@ -69,7 +69,7 @@ export function DutchBlitzPlayerViewComponent({
     [getLegalPostTargets, local.selectedCard],
   );
 
-  /** Short-lived Framer layout bridge so the actor's card keeps `layoutId` when it lands on Dutch. */
+  /** Short-lived Framer layout bridge so the actor's card keeps `layoutId` when it lands on a center pile. */
   const [dutchPlayBridge, setDutchPlayBridge] = useState<{
     pileIndex: number;
     cardId: string;

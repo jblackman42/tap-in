@@ -70,7 +70,7 @@ export function GameBoard({
   onRemoteIncomingComplete,
 }: GameBoardProps) {
   return (
-    <LayoutGroup id="dutch-blitz-board">
+    <LayoutGroup id="blitzkrieg-board">
     <motion.div
       layoutRoot
       className="flex flex-col h-full min-h-0 bg-white select-none"
@@ -98,7 +98,7 @@ export function GameBoard({
         />
       </div>
 
-      {/* Dutch piles — scrollable center zone */}
+      {/* Center piles — scrollable center zone */}
       <div className="shrink-0 border-y border-gray-100 bg-gray-50/50">
         <DutchPilesRow
           piles={dutchPiles}

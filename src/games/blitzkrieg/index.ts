@@ -39,15 +39,15 @@ function triggerBlitz(
   };
 }
 
-export const dutchBlitzGame: GameDefinition<
+export const blitzkriegGame: GameDefinition<
   DutchBlitzState,
   DutchBlitzAction,
   DutchBlitzPlayerData
 > = {
-  id: "dutch-blitz",
-  name: "Dutch Blitz",
+  id: "blitzkrieg",
+  name: "Blitzkrieg",
   description:
-    "A fast-paced card game — race to empty your Blitz pile before anyone else!",
+    "A fast-paced card game! Race to empty your Blitz pile before anyone else!",
   minPlayers: 2,
   maxPlayers: 4,
 

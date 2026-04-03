@@ -16,6 +16,7 @@ export interface PlayerViewProps<TState, TAction> {
   playerId: string;
   players: Player[];
   dispatch: (action: TAction) => void;
+  onReturnToLobby?: () => void;
 }
 
 export interface LobbyViewProps {

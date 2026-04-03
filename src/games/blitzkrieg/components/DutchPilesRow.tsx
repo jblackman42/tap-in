@@ -182,7 +182,7 @@ export function DutchPilesRow({
   if (items.length === 0) {
     return (
       <div className="px-2 py-4 text-center text-gray-400 text-xs">
-        No Dutch piles yet — play a 1 to start one!
+        No center piles yet — play a 1 to start one!
       </div>
     );
   }

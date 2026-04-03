@@ -120,6 +120,10 @@ export default function PartyPage({
     broadcastUpdate({ gameId: party.gameId, status: "playing" });
   }
 
+  const handleReturnToLobby = useCallback(() => {
+    broadcastUpdate({ status: "lobby" });
+  }, [broadcastUpdate]);
+
   if (!hasSessionForCode) {
     return (
       <div className="flex flex-col items-center justify-center min-h-svh bg-white px-4 gap-6">
@@ -245,6 +249,7 @@ export default function PartyPage({
             playerId={playerId ?? ""}
             players={party.players}
             dispatch={dispatch}
+            onReturnToLobby={handleReturnToLobby}
           />
         </div>
       </div>

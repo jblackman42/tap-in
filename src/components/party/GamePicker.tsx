@@ -31,7 +31,7 @@ export function GamePicker({
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <label
           htmlFor="game-search"
           className="text-sm font-medium text-violet-800"
@@ -47,7 +47,7 @@ export function GamePicker({
           onChange={(e) => setQuery(e.target.value)}
           autoComplete="off"
         />
-      </div>
+      </div> */}
 
       <div>
         <p className="text-xs font-semibold uppercase tracking-wider text-violet-400 mb-3">

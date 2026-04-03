@@ -22,7 +22,7 @@ export interface Card extends CardFace {
 }
 
 /**
- * Framer shared `layoutId` prefix for a deck card instance. Used by `cardLayoutId` and Dutch actor bridge.
+ * Framer shared `layoutId` prefix for a deck card instance. Used by `cardLayoutId` and center-pile actor bridge.
  */
 export function layoutIdFromCardId(cardId: string): string {
   return `db-${cardId}`;
@@ -37,7 +37,7 @@ export function cardLayoutId(card: Card): string {
 }
 
 /**
- * Layout id for a Dutch pile top — MUST NOT reuse `cardLayoutId` or it collides with hand/wood/blitz
+ * Layout id for a center pile top — MUST NOT reuse `cardLayoutId` or it collides with hand/wood/blitz
  * when the same suit+number appears in the center and in your zones (Framer links them as one element).
  */
 export function dutchPileLayoutId(pileIndex: number, top: CardFace): string {

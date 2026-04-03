@@ -1,6 +1,10 @@
 import { registerGame } from "@/lib/engine/registry";
 // import { hotTakeGame } from "./hot-take";
-import { dutchBlitzGame } from "./dutch-blitz";
+import { blitzkriegGame } from "./blitzkrieg";
+import { quipProQuoGame } from "./quip-pro-quo";
+import { fibOrFableGame } from "./fib-or-fable";
 
 // registerGame(hotTakeGame);
-registerGame(dutchBlitzGame);
+registerGame(blitzkriegGame);
+registerGame(quipProQuoGame);
+registerGame(fibOrFableGame);

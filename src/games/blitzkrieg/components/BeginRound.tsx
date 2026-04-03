@@ -50,7 +50,7 @@ export function BeginRound({
           {isFirstRound ? "Get Ready" : `Round ${round}`}
         </p>
         <h1 className="text-3xl font-bold text-gray-900">
-          {isFirstRound ? "Dutch Blitz" : "Next Round"}
+          {isFirstRound ? "Blitzkrieg" : "Next Round"}
         </h1>
         <p className="text-gray-500 mt-2 text-sm max-w-xs mx-auto">
           Get rid of your Blitz pile first — you win the round!

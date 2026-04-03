@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import dynamic from "next/dynamic";
+import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { nanoid } from "nanoid";
 import "@/games/registry";
@@ -14,14 +15,21 @@ import { JoinForm } from "@/components/party/JoinForm";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
+const JoinQrScanStep = dynamic(
+  () => import("@/components/party/JoinQrScanStep"),
+  { ssr: false },
+);
+
 type Step = "game" | "profile";
+
+type JoinStep = "default" | "scan-qr" | "enter-code";
 
 export default function HomePage() {
   const router = useRouter();
   const [step, setStep] = useState<Step>("game");
   const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
   const [joinCode, setJoinCode] = useState("");
-  const [showJoinInput, setShowJoinInput] = useState(false);
+  const [joinStep, setJoinStep] = useState<JoinStep>("default");
   const [creating, setCreating] = useState(false);
 
   const selectedGame = selectedGameId ? getGame(selectedGameId) : null;
@@ -51,6 +59,23 @@ export default function HomePage() {
     if (code.length >= 4) {
       router.push(`/join/${code}`);
     }
+  }
+
+  const handleQrValidCode = useCallback(
+    (code: string) => {
+      router.push(`/join/${code}`);
+    },
+    [router],
+  );
+
+  const handleQrBack = useCallback(() => {
+    setJoinStep("default");
+  }, []);
+
+  if (joinStep === "scan-qr") {
+    return (
+      <JoinQrScanStep onValidCode={handleQrValidCode} onBack={handleQrBack} />
+    );
   }
 
   return (
@@ -92,8 +117,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="mt-8 max-w-sm mx-auto">
-            {showJoinInput ? (
+          <div className="mt-8 w-full">
+            {joinStep === "enter-code" ? (
               <div className="space-y-3">
                 <Input
                   label="Party code"
@@ -117,7 +142,7 @@ export default function HomePage() {
                   size="sm"
                   className="w-full"
                   onClick={() => {
-                    setShowJoinInput(false);
+                    setJoinStep("default");
                     setJoinCode("");
                   }}
                 >
@@ -125,14 +150,24 @@ export default function HomePage() {
                 </Button>
               </div>
             ) : (
-              <Button
-                variant="secondary"
-                size="lg"
-                className="w-full"
-                onClick={() => setShowJoinInput(true)}
-              >
-                Join with code
-              </Button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="w-full"
+                  onClick={() => setJoinStep("scan-qr")}
+                >
+                  Join with QR code
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="w-full"
+                  onClick={() => setJoinStep("enter-code")}
+                >
+                  Join with party code
+                </Button>
+              </div>
             )}
           </div>
         </div>
