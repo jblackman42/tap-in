@@ -10,9 +10,12 @@ import {
   type PartySession,
 } from "./session";
 
+export type PartyConnectionIssue = "none" | "channel_error" | "timed_out";
+
 interface UsePartyOptions {
   code?: string;
   autoConnect?: boolean;
+  reconnectAttempt?: number;
   onPlayerJoin?: (player: Player) => void;
   onPlayerLeave?: (player: Player) => void;
 }
@@ -23,6 +26,7 @@ interface UsePartyReturn {
   isHost: boolean;
   channel: RealtimeChannel | null;
   connected: boolean;
+  connectionIssue: PartyConnectionIssue;
   leaveParty: () => void;
   updatePartyStatus: (status: Party["status"]) => void;
   setGameId: (gameId: string) => void;
@@ -30,14 +34,18 @@ interface UsePartyReturn {
 }
 
 export function useParty(options: UsePartyOptions = {}): UsePartyReturn {
-  const { code, autoConnect = false } = options;
+  const { code, autoConnect = false, reconnectAttempt = 0 } = options;
   const [party, setParty] = useState<Party | null>(null);
   const [playerId, setPlayerId] = useState<string | null>(null);
   const [isHost, setIsHost] = useState(false);
   const [connected, setConnected] = useState(false);
+  const [connectionIssue, setConnectionIssue] =
+    useState<PartyConnectionIssue>("none");
   const channelRef = useRef<RealtimeChannel | null>(null);
   const optionsRef = useRef(options);
   const connectedRef = useRef(false);
+  // Keep latest callbacks without re-subscribing the channel (stable listener pattern).
+  // eslint-disable-next-line react-hooks/refs -- intentional ref sync for event handlers
   optionsRef.current = options;
 
   const cleanup = useCallback(() => {
@@ -51,14 +59,14 @@ export function useParty(options: UsePartyOptions = {}): UsePartyReturn {
 
   const connect = useCallback(
     (session: PartySession) => {
-      if (connectedRef.current) return;
-      connectedRef.current = true;
+      cleanup();
 
       const isCreator = session.intent === "create";
       const pid = session.playerId;
 
       setPlayerId(pid);
       setIsHost(isCreator);
+      setConnectionIssue("none");
       setParty({
         code: session.code,
         hostId: isCreator ? pid : "",
@@ -67,8 +75,6 @@ export function useParty(options: UsePartyOptions = {}): UsePartyReturn {
         status: "lobby",
         createdAt: Date.now(),
       });
-
-      cleanup();
 
       const channel = supabase.channel(`tapin:${session.code}`, {
         config: { presence: { key: pid } },
@@ -96,8 +102,9 @@ export function useParty(options: UsePartyOptions = {}): UsePartyReturn {
               });
             }
           }
-          const players: Player[] = Array.from(deduped.values())
-            .sort((a, b) => a.joinedAt - b.joinedAt);
+          const players: Player[] = Array.from(deduped.values()).sort(
+            (a, b) => a.joinedAt - b.joinedAt,
+          );
 
           setParty((prev) => (prev ? { ...prev, players } : null));
         })
@@ -120,7 +127,9 @@ export function useParty(options: UsePartyOptions = {}): UsePartyReturn {
         })
         .subscribe(async (status) => {
           if (status === "SUBSCRIBED") {
+            connectedRef.current = true;
             setConnected(true);
+            setConnectionIssue("none");
             await channel.track({
               id: pid,
               name: session.name,
@@ -128,6 +137,16 @@ export function useParty(options: UsePartyOptions = {}): UsePartyReturn {
               joinedAt: Date.now(),
               data: session.data ?? {},
             });
+          } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+            setConnectionIssue(
+              status === "TIMED_OUT" ? "timed_out" : "channel_error",
+            );
+            if (channelRef.current === channel) {
+              supabase.removeChannel(channel);
+              channelRef.current = null;
+            }
+            connectedRef.current = false;
+            setConnected(false);
           }
         });
 
@@ -137,15 +156,15 @@ export function useParty(options: UsePartyOptions = {}): UsePartyReturn {
   );
 
   useEffect(() => {
-    if (!autoConnect || !code || connectedRef.current) return;
+    if (!autoConnect || !code) return;
 
     const session = loadPartySession();
-    if (session && session.code === code) {
-      connect(session);
-    }
+    if (!session || session.code !== code) return;
+
+    connect(session);
 
     return cleanup;
-  }, [autoConnect, code, connect, cleanup]);
+  }, [autoConnect, code, connect, cleanup, reconnectAttempt]);
 
   const leaveParty = useCallback(() => {
     cleanup();
@@ -153,6 +172,7 @@ export function useParty(options: UsePartyOptions = {}): UsePartyReturn {
     setParty(null);
     setPlayerId(null);
     setIsHost(false);
+    setConnectionIssue("none");
   }, [cleanup]);
 
   const updatePartyStatus = useCallback(
@@ -198,8 +218,9 @@ export function useParty(options: UsePartyOptions = {}): UsePartyReturn {
     party,
     playerId,
     isHost,
-    channel: channelRef.current,
+    channel: null,
     connected,
+    connectionIssue,
     leaveParty,
     updatePartyStatus,
     setGameId,

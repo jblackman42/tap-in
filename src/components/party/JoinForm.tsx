@@ -105,8 +105,9 @@ export function JoinForm({
         name="name"
         placeholder="Enter your name"
         value={name}
+        maxLength={16}
         onChange={(e) => {
-          setName(e.target.value);
+          setName(e.target.value.slice(0, 16));
           setErrors((prev) => {
             const next = { ...prev };
             delete next.name;

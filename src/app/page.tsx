@@ -6,6 +6,7 @@ import { nanoid } from "nanoid";
 import "@/games/registry";
 import { generatePartyCode } from "@/lib/party/party-code";
 import { savePartySession } from "@/lib/party/session";
+import { recordRecentPartyFromSession } from "@/lib/party/recentParties";
 import { getGame } from "@/lib/engine/registry";
 import { TapInWordmark } from "@/components/brand/TapInWordmark";
 import { GamePicker } from "@/components/party/GamePicker";
@@ -31,14 +32,16 @@ export default function HomePage() {
     const code = generatePartyCode();
     const playerId = nanoid();
 
-    savePartySession({
-      intent: "create",
+    const session = {
+      intent: "create" as const,
       code,
       playerId,
       name,
       data,
       gameId: selectedGameId,
-    });
+    };
+    savePartySession(session);
+    recordRecentPartyFromSession(session);
 
     router.push(`/party/${code}`);
   }
@@ -51,7 +54,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-dvh flex flex-col bg-white text-violet-950">
+    <div className="min-h-svh flex flex-col bg-white text-violet-950">
       <div className="flex-1 flex flex-col items-center px-4 pt-12 pb-16 sm:pt-16 sm:pb-24">
         <div className="w-full max-w-2xl mx-auto flex flex-col items-center text-center gap-3 mb-10 sm:mb-14">
           <TapInWordmark />

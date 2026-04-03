@@ -36,8 +36,11 @@ export function useGameEngine<TState, TAction, TPlayerData = Record<string, unkn
   const privateChannelsRef = useRef<Map<string, RealtimeChannel>>(new Map());
   const privateReadyRef = useRef<Set<string>>(new Set());
   const playersRef = useRef(players);
+  // Keep latest players/state for async broadcast callbacks without resubscribing channels.
+  // eslint-disable-next-line react-hooks/refs -- intentional ref sync
   playersRef.current = players;
 
+  // eslint-disable-next-line react-hooks/refs -- intentional ref sync
   stateRef.current = state;
 
   const broadcastState = useCallback(

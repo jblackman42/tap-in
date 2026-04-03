@@ -301,15 +301,29 @@ interface PartySession {
 
 Use `savePartySession()` before navigating and `loadPartySession()` / `clearPartySession()` on the destination page.
 
+### Recent parties (localStorage)
+
+So players can **rejoin after disconnect** without re-entering a code, the app keeps a short list of recent party identities in **localStorage** (`tapin:recentParties`). Each entry includes `code`, `playerId`, display `name`, `intent`, optional `gameId` / join `data`, and `lastSeenAt`.
+
+- Entries are **upserted** when a session is saved on the home or join flow, and **updated** when the live party reports a `gameId`.
+- **Clearing** the active session (`clearPartySession()`, e.g. “Home” in the menu) does **not** remove recent parties.
+- The fullscreen **menu** lists recent parties, optional **presence probes** (best-effort “Active” / “Likely ended”), **Rejoin** (writes `savePartySession` then navigates to `/party/[code]`), and **Forget** (removes one entry).
+
+### Disconnect toasts
+
+The shell mounts **Sonner** (`<Toaster />` in `AppShell`). The party page passes `onPlayerLeave` to `useParty` so when Supabase presence reports a departure, remaining clients see a toast with that player’s name (e.g. they disconnected).
+
 ## Hooks Reference
 
 ### `useParty(options?)`
 
 Connects to a party channel and manages presence.
 
-**Returns:** `{ party, playerId, isHost, channel, connected, leaveParty, updatePartyStatus, setGameId }`
+**Returns:** `{ party, playerId, isHost, channel, connected, connectionIssue, leaveParty, updatePartyStatus, setGameId, broadcastUpdate }`
 
 - `connected` — true once the WebSocket is subscribed
+- `connectionIssue` — `"none"` \| `"channel_error"` \| `"timed_out"` if the Realtime subscription fails
+- `channel` — reserved; currently always `null` (use internal refs if you extend the hook)
 - `leaveParty()` — disconnects and clears session
 - `updatePartyStatus(status)` — host only, broadcasts status change
 - `setGameId(gameId)` — host only, broadcasts gameId to players
@@ -318,8 +332,13 @@ Connects to a party channel and manages presence.
 **Options:**
 - `code?: string` — party code to connect to
 - `autoConnect?: boolean` — if true, reads session from sessionStorage and connects on mount
+- `reconnectAttempt?: number` — increment to tear down and reconnect (e.g. user taps “Try again” after a failure)
 - `onPlayerJoin?: (player) => void`
 - `onPlayerLeave?: (player) => void`
+
+### Party route behavior
+
+The `/party/[code]` page handles **no saved session** (prompts to join again), **subscription failures / timeouts** (retry + home), and **no host in presence** after sync (**party ended** — host-authoritative model).
 
 ### `useGameEngine(options)`
 

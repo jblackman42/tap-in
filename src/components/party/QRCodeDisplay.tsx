@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { QRCodeSVG } from "qrcode.react";
 
 interface QRCodeDisplayProps {
@@ -8,19 +8,18 @@ interface QRCodeDisplayProps {
 }
 
 export function QRCodeDisplay({ code }: QRCodeDisplayProps) {
-  const [joinUrl, setJoinUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    const origin = window.location.origin;
-    setJoinUrl(`${origin}/join/${code}`);
-  }, [code]);
+  const joinUrl = useSyncExternalStore(
+    () => () => {},
+    () => `${window.location.origin}/join/${code}`,
+    () => null as string | null,
+  );
 
   return (
     <div className="flex flex-col items-center gap-4 rounded-2xl bg-white p-6 shadow-lg border border-gray-100">
       <p className="text-sm font-medium text-violet-600 tracking-wider uppercase">
         Tap In
       </p>
-      {joinUrl ? (
+      {joinUrl != null && joinUrl !== "" ? (
         <QRCodeSVG
           value={joinUrl}
           size={200}
