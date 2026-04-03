@@ -27,17 +27,17 @@ export function OpponentStrip({
           <div
             key={p.id}
             className={`
-              flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium
-              transition-colors duration-200
+              flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-label font-bold
+              transition-colors duration-200 border-2
               ${
                 isLow
-                  ? "bg-red-100 text-red-700 animate-[pulse_2s_ease-in-out_1]"
-                  : "bg-gray-100 text-gray-600"
+                  ? "bg-primary/20 text-primary border-primary/40 animate-[pulse_2s_ease-in-out_1]"
+                  : "bg-[#2a2929] text-white/60 border-white/10"
               }
             `}
           >
             <span className="truncate max-w-16">{p.name}</span>
-            <span className="tabular-nums font-bold">{count}</span>
+            <span className="tabular-nums">{count}</span>
           </div>
         );
       })}

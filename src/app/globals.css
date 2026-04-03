@@ -1,8 +1,28 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fcf9f8;
+  --foreground: #1c1b1b;
+  --primary: #bb0058;
+  --primary-dark: #8f0041;
+  --primary-darker: #3f0019;
+  --primary-container: #ffd9e0;
+  --secondary: #006970;
+  --secondary-dark: #004f54;
+  --secondary-container: #7df4ff;
+  --tertiary: #506600;
+  --tertiary-container: #c3f400;
+  --surface: #fcf9f8;
+  --surface-dim: #dcd9d9;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f6f3f2;
+  --surface-container: #f0eded;
+  --surface-container-high: #eae7e7;
+  --surface-container-highest: #e5e2e1;
+  --outline: #777777;
+  --outline-variant: #c6c6c6;
+  --error: #ba1a1a;
+  --error-container: #ffdad6;
   color-scheme: light;
 }
 
@@ -14,20 +34,75 @@ html {
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-darker: var(--primary-darker);
+  --color-primary-container: var(--primary-container);
+  --color-secondary: var(--secondary);
+  --color-secondary-dark: var(--secondary-dark);
+  --color-secondary-container: var(--secondary-container);
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-container: var(--tertiary-container);
+  --color-surface: var(--surface);
+  --color-surface-dim: var(--surface-dim);
+  --color-surface-lowest: var(--surface-container-lowest);
+  --color-surface-low: var(--surface-container-low);
+  --color-surface-mid: var(--surface-container);
+  --color-surface-high: var(--surface-container-high);
+  --color-surface-highest: var(--surface-container-highest);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-error: var(--error);
+  --color-error-container: var(--error-container);
+  --font-headline: var(--font-headline);
+  --font-body: var(--font-body);
+  --font-label: var(--font-label);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
 }
 
 * {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Memphis patterns */
+.memphis-dots {
+  background-image: radial-gradient(var(--primary) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.memphis-squiggles {
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20c5 0 5-5 10-5s5 5 10 5 5-5 10-5 5 5 10 5' fill='none' stroke='%23006970' stroke-width='2'/%3E%3C/svg%3E");
+}
+
+.memphis-diag {
+  background-image: radial-gradient(#e5e2e1 2px, transparent 2px),
+    linear-gradient(
+      45deg,
+      transparent 48%,
+      #e5e2e1 48%,
+      #e5e2e1 52%,
+      transparent 52%
+    );
+  background-size: 32px 32px, 64px 64px;
+}
+
+/* Wobbly border-radius utility classes */
+.wobbly-br-1 {
+  border-radius: 32px 12px 16px 24px;
+}
+.wobbly-br-2 {
+  border-radius: 16px 32px 24px 12px;
+}
+.wobbly-br-3 {
+  border-radius: 24px 16px 32px 12px;
+}
+
+/* Scrollbar hide */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -36,6 +111,7 @@ body {
   display: none;
 }
 
+/* Blitzkrieg animations */
 @keyframes blitz-banner-enter {
   from {
     transform: translateY(-100%);
@@ -77,7 +153,8 @@ body {
 }
 
 @keyframes card-flash {
-  0%, 100% {
+  0%,
+  100% {
     filter: brightness(1);
   }
   50% {
@@ -102,7 +179,6 @@ body {
 }
 
 /* Quip Pro Quo animations */
-
 @keyframes qpq-lock-in {
   0% {
     transform: scale(0.8);

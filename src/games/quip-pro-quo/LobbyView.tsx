@@ -56,12 +56,12 @@ export function QuipProQuoLobbyView({
       {isHost && showCustom && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-gray-700">
+            <p className="text-sm font-headline font-bold text-foreground uppercase">
               Custom prompts ({prompts.length}/{MAX_CUSTOM_PROMPTS})
             </p>
             <button
               type="button"
-              className="text-xs text-violet-600 hover:text-violet-800"
+              className="text-xs font-label font-bold text-secondary hover:text-secondary-dark uppercase tracking-wider"
               onClick={() => setShowCustom(false)}
             >
               Done
@@ -89,16 +89,16 @@ export function QuipProQuoLobbyView({
           )}
 
           {prompts.length > 0 && (
-            <ul className="space-y-1.5 max-h-48 overflow-y-auto">
+            <ul className="space-y-2 max-h-48 overflow-y-auto">
               {prompts.map((text, i) => (
                 <li
                   key={i}
-                  className="flex items-start justify-between gap-2 bg-violet-50 rounded-lg px-3 py-2 text-sm text-violet-900"
+                  className="flex items-start justify-between gap-2 bg-[#ff3d91]/10 border-2 border-[#ff3d91]/20 wobbly-br-2 px-4 py-3 text-sm text-foreground font-body"
                 >
                   <span className="flex-1 break-words">{text}</span>
                   <button
                     type="button"
-                    className="text-violet-400 hover:text-red-500 shrink-0 text-xs mt-0.5"
+                    className="text-primary hover:text-error shrink-0 text-xs font-label font-bold uppercase mt-0.5"
                     onClick={() => handleRemovePrompt(i)}
                   >
                     Remove
@@ -111,7 +111,7 @@ export function QuipProQuoLobbyView({
       )}
 
       {!isHost && (
-        <p className="text-center text-gray-400 text-sm">
+        <p className="text-center text-outline font-label text-sm uppercase tracking-wider">
           Waiting for the host to start the game…
         </p>
       )}

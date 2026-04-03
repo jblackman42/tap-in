@@ -128,27 +128,12 @@ export const quipProQuoGame: GameDefinition<
   minPlayers: 3,
   maxPlayers: 8,
 
-  joinFields: [
-    {
-      name: "experience",
-      label: "Have you played Quip Pro Quo before?",
-      type: "select",
-      options: [
-        { label: "Yes", value: "experienced" },
-        { label: "Not yet", value: "new" },
-      ],
-      required: true,
-    },
-  ],
+  joinFields: [],
 
   createInitialState(players: QuipProQuoPlayer[]): QuipProQuoState {
     const playerIds = players.map((p) => p.id);
     const scores: Record<string, number> = {};
     for (const p of players) scores[p.id] = 0;
-
-    const newPlayers = players
-      .filter((p) => (p.data as QuipProQuoPlayerData)?.experience === "new")
-      .map((p) => p.id);
 
     const custom = getCustomPrompts();
     clearCustomPrompts();
@@ -165,7 +150,7 @@ export const quipProQuoGame: GameDefinition<
       ...roundInit,
       scores,
       roundScores: Object.fromEntries(playerIds.map((id) => [id, []])),
-      newPlayers,
+      newPlayers: [],
       playerIds,
     };
   },

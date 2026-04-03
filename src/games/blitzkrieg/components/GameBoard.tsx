@@ -73,15 +73,17 @@ export function GameBoard({
     <LayoutGroup id="blitzkrieg-board">
     <motion.div
       layoutRoot
-      className="flex flex-col h-full min-h-0 bg-white select-none"
+      className="flex flex-col h-full min-h-0 bg-[#1c1b1b] select-none relative"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       onClick={(e) => {
-        // Deselect on tap in empty space
         if (e.target === e.currentTarget) onDeselect();
       }}
     >
+      {/* Faint Memphis dot pattern */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.04] memphis-dots" />
+
       {/* Score strip */}
-      <div className="shrink-0 px-2 pt-2">
+      <div className="shrink-0 px-2 pt-2 relative z-10">
         <ScoreStrip
           players={players}
           scores={scores}
@@ -90,7 +92,7 @@ export function GameBoard({
       </div>
 
       {/* Opponent Blitz strip */}
-      <div className="shrink-0 py-1.5">
+      <div className="shrink-0 py-1.5 relative z-10">
         <OpponentStrip
           players={players}
           blitzCounts={blitzCounts}
@@ -98,8 +100,8 @@ export function GameBoard({
         />
       </div>
 
-      {/* Center piles — scrollable center zone */}
-      <div className="shrink-0 border-y border-gray-100 bg-gray-50/50">
+      {/* Center piles — striped background */}
+      <div className="shrink-0 border-y-2 border-tertiary-container/30 bg-[#2a2929] relative z-10">
         <DutchPilesRow
           piles={dutchPiles}
           dutchPlayBridge={dutchPlayBridge}
@@ -115,9 +117,8 @@ export function GameBoard({
         />
       </div>
 
-      {/* Player zone — Blitz pile side swaps for left-handed */}
-      <div className="flex-1 flex flex-col justify-end gap-3 px-3 pb-3 pt-2">
-        {/* Post piles + Blitz pile row */}
+      {/* Player zone */}
+      <div className="flex-1 flex flex-col justify-end gap-3 px-3 pb-3 pt-2 relative z-10">
         <div
           className={`flex items-end justify-between gap-2 ${
             leftHanded ? "flex-row-reverse" : ""
@@ -139,7 +140,6 @@ export function GameBoard({
           />
         </div>
 
-        {/* Wood pile + Hand */}
         <WoodPileAndHand
           woodPile={local.woodPile}
           hand={local.hand}

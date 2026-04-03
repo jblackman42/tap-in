@@ -39,7 +39,7 @@ export function WoodPileAndHand({
   const woodEmpty = woodPile.length === 0;
 
   return (
-    <div className="flex items-center justify-center gap-4">
+    <div className="flex items-center justify-center gap-4 bg-[#2a2929] rounded-2xl border border-white/10 py-3 px-4">
       <div
         className="flex flex-col items-center gap-1"
         style={{ perspective: WOOD_PILE_PERSPECTIVE_PX }}
@@ -63,11 +63,11 @@ export function WoodPileAndHand({
             />
           </motion.div>
         ) : (
-          <div className="w-14 h-20 rounded-lg border border-dashed border-gray-300 bg-gray-50/50 flex items-center justify-center text-gray-300 text-xs">
+          <div className="w-14 h-20 rounded-lg border-2 border-dashed border-white/20 bg-white/5 flex items-center justify-center text-white/20 text-xs">
             {handEmpty ? "—" : ""}
           </div>
         )}
-        <span className="text-[10px] text-gray-400 font-medium">Wood</span>
+        <span className="text-[10px] text-white/40 font-label font-bold uppercase tracking-widest">Wood</span>
       </div>
 
       <div className="flex flex-col items-center gap-1">
@@ -82,8 +82,8 @@ export function WoodPileAndHand({
               w-14 h-20 rounded-lg border-2 border-dashed flex items-center justify-center
               ${
                 woodEmpty
-                  ? "border-gray-200 bg-gray-50/30 text-gray-300 cursor-default"
-                  : "border-violet-300 bg-violet-50 text-violet-500 cursor-pointer hover:bg-violet-100 active:bg-violet-200"
+                  ? "border-white/10 bg-white/5 text-white/20 cursor-default"
+                  : "border-secondary text-secondary cursor-pointer hover:bg-secondary/20 active:bg-secondary/30"
               }
             `}
           >
@@ -106,7 +106,7 @@ export function WoodPileAndHand({
             </div>
           </motion.div>
         )}
-        <span className="text-[10px] text-gray-400 font-medium">
+        <span className="text-[10px] text-white/40 font-label font-bold uppercase tracking-widest">
           {handEmpty ? (woodEmpty ? "" : "Pick up") : `Hand (${hand.length})`}
         </span>
       </div>

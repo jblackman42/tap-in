@@ -2,22 +2,50 @@
 
 import { useMemo, useState } from "react";
 import { getAllGames } from "@/lib/engine/registry";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
+
+const gameCardStyles: Record<string, { bg: string; text: string; border: string; shadow: string; badge: string; wobbly: string }> = {
+  blitzkrieg: {
+    bg: "bg-[#1c1b1b]",
+    text: "text-white",
+    border: "border-tertiary-container",
+    shadow: "shadow-[8px_8px_0px_0px_rgba(80,102,0,1)]",
+    badge: "bg-primary text-white",
+    wobbly: "wobbly-br-1",
+  },
+  "quip-pro-quo": {
+    bg: "bg-[#ff3d91]",
+    text: "text-white",
+    border: "border-foreground",
+    shadow: "shadow-[8px_8px_0px_0px_rgba(28,27,27,1)]",
+    badge: "bg-foreground text-white",
+    wobbly: "wobbly-br-2",
+  },
+  "fib-or-fable": {
+    bg: "bg-tertiary-container",
+    text: "text-foreground",
+    border: "border-foreground",
+    shadow: "shadow-[8px_8px_0px_0px_rgba(28,27,27,1)]",
+    badge: "bg-tertiary text-white",
+    wobbly: "wobbly-br-3",
+  },
+};
+
+const defaultCardStyle = {
+  bg: "bg-secondary",
+  text: "text-white",
+  border: "border-foreground",
+  shadow: "shadow-[8px_8px_0px_0px_rgba(28,27,27,1)]",
+  badge: "bg-foreground text-white",
+  wobbly: "wobbly-br-1",
+};
 
 interface GamePickerProps {
-  selectedGameId: string | null;
   onSelect: (gameId: string) => void;
-  onContinue: () => void;
 }
 
-export function GamePicker({
-  selectedGameId,
-  onSelect,
-  onContinue,
-}: GamePickerProps) {
+export function GamePicker({ onSelect }: GamePickerProps) {
   const games = getAllGames();
-  const [query, setQuery] = useState("");
+  const [query] = useState("");
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -31,93 +59,50 @@ export function GamePicker({
 
   return (
     <div className="space-y-6">
-      {/* <div className="space-y-2">
-        <label
-          htmlFor="game-search"
-          className="text-sm font-medium text-violet-800"
-        >
-          Search games
-        </label>
-        <Input
-          id="game-search"
-          name="game-search"
-          type="search"
-          placeholder="Type to filter…"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          autoComplete="off"
-        />
-      </div> */}
-
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-violet-400 mb-3">
+        <span className="font-label text-[10px] uppercase tracking-[0.2em] font-bold text-outline bg-surface-highest px-3 py-1 rounded-full">
           Choose a game
-        </p>
+        </span>
         {filtered.length === 0 ? (
-          <p className="text-center text-violet-600/80 py-10 text-sm">
+          <p className="text-center text-outline py-10 text-sm font-body">
             No games match &ldquo;{query.trim()}&rdquo;. Try another search.
           </p>
         ) : (
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[min(50vh,22rem)] overflow-y-auto pr-1">
-            {filtered.map((game) => (
-              <li key={game.id}>
-                <GameCard
-                  game={game}
-                  selected={selectedGameId === game.id}
-                  onSelect={() => onSelect(game.id)}
-                />
-              </li>
-            ))}
+          <ul className="grid grid-cols-1 gap-5 mt-4">
+            {filtered.map((game) => {
+              const style = gameCardStyles[game.id] ?? defaultCardStyle;
+              return (
+                <li key={game.id}>
+                  <button
+                    type="button"
+                    onClick={() => onSelect(game.id)}
+                    className={`
+                      group relative w-full text-left p-6 border-4 overflow-hidden cursor-pointer
+                      transition-all duration-150 hover:-translate-y-1 active:scale-[0.98]
+                      focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40
+                      ${style.bg} ${style.text} ${style.border} ${style.shadow} ${style.wobbly}
+                    `}
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="font-headline font-bold text-3xl uppercase tracking-tighter">
+                        {game.name}
+                      </h3>
+                      <span
+                        className={`${style.badge} text-[10px] font-label font-bold px-2 py-1 rounded`}
+                      >
+                        {game.minPlayers}–{game.maxPlayers} PLAYERS
+                      </span>
+                    </div>
+                    <p className="text-sm opacity-90 font-medium leading-relaxed">
+                      {game.description}
+                    </p>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>
-
-      <Button
-        size="lg"
-        className="w-full"
-        disabled={!selectedGameId}
-        onClick={onContinue}
-      >
-        Continue
-      </Button>
     </div>
-  );
-}
-
-function GameCard({
-  game,
-  selected,
-  onSelect,
-}: {
-  game: {
-    id: string;
-    name: string;
-    description: string;
-    minPlayers: number;
-    maxPlayers: number;
-  };
-  selected: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={`
-        w-full text-left rounded-xl border-2 px-4 py-3 transition-all
-        focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2
-        ${
-          selected
-            ? "border-violet-500 bg-violet-50 shadow-sm"
-            : "border-violet-100 bg-white hover:border-violet-200 hover:bg-violet-50/50"
-        }
-      `}
-    >
-      <p className="font-semibold text-violet-950 leading-snug">{game.name}</p>
-      <p className="text-sm text-violet-700/80 mt-1 line-clamp-2">{game.description}</p>
-      <p className="text-xs text-violet-400 mt-2 tabular-nums">
-        {game.minPlayers}–{game.maxPlayers} players
-      </p>
-    </button>
   );
 }

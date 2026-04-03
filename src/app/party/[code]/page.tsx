@@ -4,6 +4,7 @@ import {
   use,
   useCallback,
   useEffect,
+  useRef,
   useState,
   useSyncExternalStore,
 } from "react";
@@ -23,8 +24,10 @@ import type { Player } from "@/lib/party/types";
 
 function ConnectingScreen({ message }: { message: string }) {
   return (
-    <div className="flex items-center justify-center min-h-svh bg-white px-4">
-      <p className="text-gray-400 text-lg text-center">{message}</p>
+    <div className="flex items-center justify-center min-h-svh bg-surface px-6 relative z-10">
+      <p className="font-headline font-bold text-xl text-outline text-center uppercase tracking-wider">
+        {message}
+      </p>
     </div>
   );
 }
@@ -48,10 +51,19 @@ export default function PartyPage({
     () => true,
   );
 
+  const broadcastRef = useRef<{ broadcastUpdate: (u: Partial<import("@/lib/party/types").Party>) => void; party: import("@/lib/party/types").Party | null }>({ broadcastUpdate: () => {}, party: null });
+
   const onPlayerLeave = useCallback((player: Player) => {
     toast(`${player.name} disconnected`, {
       description: "They left the party.",
     });
+  }, []);
+
+  const onPlayerJoin = useCallback(() => {
+    const { broadcastUpdate, party } = broadcastRef.current;
+    if (party?.gameId) {
+      broadcastUpdate({ gameId: party.gameId });
+    }
   }, []);
 
   const {
@@ -66,7 +78,10 @@ export default function PartyPage({
     autoConnect: true,
     reconnectAttempt,
     onPlayerLeave,
+    onPlayerJoin,
   });
+
+  broadcastRef.current = { broadcastUpdate, party };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const game: GameDefinition<any, any, any> | null = party?.gameId
@@ -78,6 +93,13 @@ export default function PartyPage({
       touchRecentParty(code, { gameId: party.gameId });
     }
   }, [code, party?.gameId]);
+
+  useEffect(() => {
+    if (isHost && connected && party?.gameId) {
+      broadcastUpdate({ gameId: party.gameId });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isHost, connected]);
 
   useEffect(() => {
     if (!hasSessionForCode) return;
@@ -126,14 +148,14 @@ export default function PartyPage({
 
   if (!hasSessionForCode) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-svh bg-white px-4 gap-6">
-        <div className="w-full max-w-sm text-center space-y-2">
-          <h1 className="text-xl font-semibold text-violet-950">
+      <div className="flex flex-col items-center justify-center min-h-svh bg-surface px-6 gap-6 relative z-10">
+        <div className="w-full max-w-sm text-center space-y-3">
+          <h1 className="font-headline font-bold text-2xl uppercase tracking-tight text-foreground">
             No saved session
           </h1>
-          <p className="text-violet-700/90 text-sm leading-relaxed">
+          <p className="font-body text-sm text-outline leading-relaxed">
             This device doesn&apos;t have party credentials for{" "}
-            <span className="font-mono tracking-wider">{code}</span>. Join again
+            <span className="font-headline font-bold tracking-wider">{code}</span>. Join again
             with the party code or QR link, or open the menu to rejoin from
             recent parties.
           </p>
@@ -164,15 +186,15 @@ export default function PartyPage({
         ? "The connection timed out."
         : connectionIssue === "channel_error"
           ? "Could not connect to the party channel."
-          : "Couldn’t reach the party in time.";
+          : "Couldn't reach the party in time.";
 
     return (
-      <div className="flex flex-col items-center justify-center min-h-svh bg-white px-4 gap-6">
-        <div className="w-full max-w-sm text-center space-y-2">
-          <h1 className="text-xl font-semibold text-violet-950">
+      <div className="flex flex-col items-center justify-center min-h-svh bg-surface px-6 gap-6 relative z-10">
+        <div className="w-full max-w-sm text-center space-y-3">
+          <h1 className="font-headline font-bold text-2xl uppercase tracking-tight text-foreground">
             Couldn&apos;t connect
           </h1>
-          <p className="text-violet-700/90 text-sm leading-relaxed">{detail}</p>
+          <p className="font-body text-sm text-outline leading-relaxed">{detail}</p>
         </div>
         <div className="flex flex-col gap-3 w-full max-w-xs">
           <Button
@@ -206,12 +228,12 @@ export default function PartyPage({
 
   if (partyEnded) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-svh bg-white px-4 gap-6">
-        <div className="w-full max-w-sm text-center space-y-2">
-          <h1 className="text-xl font-semibold text-violet-950">
+      <div className="flex flex-col items-center justify-center min-h-svh bg-surface px-6 gap-6 relative z-10">
+        <div className="w-full max-w-sm text-center space-y-3">
+          <h1 className="font-headline font-bold text-2xl uppercase tracking-tight text-foreground">
             This party has ended
           </h1>
-          <p className="text-violet-700/90 text-sm leading-relaxed">
+          <p className="font-body text-sm text-outline leading-relaxed">
             The host is no longer in the party. Start a new one from home or
             join another code.
           </p>
@@ -241,9 +263,11 @@ export default function PartyPage({
       return <ConnectingScreen message="Loading game…" />;
     }
 
+    const fullBleed = game.id === "blitzkrieg";
+
     return (
-      <div className="h-svh min-h-0 overflow-hidden bg-white px-4 flex flex-col">
-        <div className="w-full max-w-sm mx-auto flex-1 min-h-0 flex flex-col">
+      <div className={`h-svh min-h-0 overflow-hidden bg-surface flex flex-col relative z-10 ${fullBleed ? "" : "px-4"}`}>
+        <div className={`flex-1 min-h-0 flex flex-col ${fullBleed ? "w-full" : "w-full max-w-sm mx-auto"}`}>
           <GamePlayerView
             state={currentState}
             playerId={playerId ?? ""}
@@ -257,7 +281,7 @@ export default function PartyPage({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh bg-white px-4 py-12">
+    <div className="flex flex-col items-center justify-center min-h-svh bg-surface px-6 py-12 relative z-10">
       <div className="w-full max-w-sm">
         <Lobby
           partyCode={code}

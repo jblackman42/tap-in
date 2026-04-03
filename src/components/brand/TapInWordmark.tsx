@@ -1,5 +1,3 @@
-import { outfitWordmark } from "@/lib/fonts";
-
 interface TapInWordmarkProps {
   className?: string;
   size?: "default" | "large";
@@ -8,15 +6,14 @@ interface TapInWordmarkProps {
 export function TapInWordmark({ className = "", size = "large" }: TapInWordmarkProps) {
   const textSize =
     size === "large"
-      ? "text-6xl sm:text-7xl md:text-8xl"
-      : "text-4xl sm:text-5xl";
+      ? "text-5xl sm:text-6xl md:text-7xl"
+      : "text-3xl sm:text-4xl";
 
   return (
     <h1
-      className={`${outfitWordmark.className} ${textSize} leading-[0.95] tracking-tight ${className}`}
+      className={`font-headline font-bold italic uppercase tracking-tighter ${textSize} leading-[0.95] text-primary drop-shadow-[4px_4px_0px_#006970] ${className}`}
     >
-      <span className="font-bold text-violet-950">Tap</span>
-      <span className="font-extralight text-violet-600"> In</span>
+      Tap In
     </h1>
   );
 }

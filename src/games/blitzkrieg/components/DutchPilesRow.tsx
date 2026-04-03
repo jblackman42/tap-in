@@ -25,9 +25,7 @@ export type DutchRemoteIncoming = {
   nonce: number;
   fromX: number;
   fromY: number;
-  /** Previous top before this play; null when a new pile was started */
   prevTop: CardFace | null;
-  /** Previous pile depth (for badge on static base card) */
   prevDepth: number | null;
 };
 
@@ -171,7 +169,7 @@ export function DutchPilesRow({
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.95 }}
           transition={spring}
-          className="w-14 h-20 rounded-lg border-2 border-dashed border-green-400 bg-green-50 flex items-center justify-center text-green-500 text-2xl font-bold cursor-pointer shadow-sm"
+          className="w-14 h-20 rounded-lg border-2 border-dashed border-tertiary-container bg-tertiary/20 flex items-center justify-center text-tertiary-container text-2xl font-bold cursor-pointer"
         >
           +
         </motion.button>
@@ -181,7 +179,7 @@ export function DutchPilesRow({
 
   if (items.length === 0) {
     return (
-      <div className="px-2 py-4 text-center text-gray-400 text-xs">
+      <div className="px-2 py-4 text-center text-white/30 text-xs font-label uppercase tracking-widest">
         No center piles yet — play a 1 to start one!
       </div>
     );

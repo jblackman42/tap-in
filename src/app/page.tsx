@@ -34,6 +34,11 @@ export default function HomePage() {
 
   const selectedGame = selectedGameId ? getGame(selectedGameId) : null;
 
+  function handleGameSelect(gameId: string) {
+    setSelectedGameId(gameId);
+    setStep("profile");
+  }
+
   function handleHostProfile(name: string, data: Record<string, unknown>) {
     if (!selectedGameId) return;
     setCreating(true);
@@ -79,22 +84,21 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-svh flex flex-col bg-white text-violet-950">
-      <div className="flex-1 flex flex-col items-center px-4 pt-12 pb-16 sm:pt-16 sm:pb-24">
-        <div className="w-full max-w-2xl mx-auto flex flex-col items-center text-center gap-3 mb-10 sm:mb-14">
+    <div className="min-h-svh flex flex-col bg-surface text-foreground relative z-10">
+      <div className="flex-1 flex flex-col items-center px-6 pt-16 pb-16">
+        <div className="w-full max-w-md mx-auto flex flex-col items-center text-center gap-3 mb-10">
           <TapInWordmark />
-          <p className="text-lg sm:text-xl text-violet-700/90 max-w-md leading-relaxed">
-            Start a party, pick a game, you&apos;re in.
-          </p>
+          <div className="transform -rotate-1">
+            <p className="font-headline font-bold text-lg text-secondary uppercase tracking-tight">
+              Start a party, pick a game, you&apos;re in.
+            </p>
+            <div className="h-2 w-24 bg-primary mt-2 mx-auto" />
+          </div>
         </div>
 
-        <div className="w-full max-w-2xl mx-auto">
+        <div className="w-full max-w-md mx-auto">
           {step === "game" ? (
-            <GamePicker
-              selectedGameId={selectedGameId}
-              onSelect={setSelectedGameId}
-              onContinue={() => setStep("profile")}
-            />
+            <GamePicker onSelect={handleGameSelect} />
           ) : selectedGame ? (
             <JoinForm
               key={selectedGameId}
@@ -107,25 +111,24 @@ export default function HomePage() {
           ) : null}
 
           <div className="relative mt-12">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-violet-100" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-4 text-violet-400">
+            <div className="flex items-center gap-4">
+              <div className="h-1 flex-1 bg-surface-highest" />
+              <span className="font-label text-xs font-bold text-outline uppercase tracking-widest">
                 or join an existing party
               </span>
+              <div className="h-1 flex-1 bg-surface-highest" />
             </div>
           </div>
 
           <div className="mt-8 w-full">
             {joinStep === "enter-code" ? (
-              <div className="space-y-3">
+              <div className="bg-surface-highest p-6 rounded-[2rem] border-4 border-foreground space-y-4">
                 <Input
                   label="Party code"
-                  placeholder="Enter party code"
+                  placeholder="ENTER CODE"
                   value={joinCode}
                   onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-                  className="text-center text-xl tracking-[0.3em] font-mono"
+                  className="text-center text-3xl tracking-[0.5em] font-headline font-bold"
                   maxLength={6}
                   autoFocus
                 />
@@ -150,7 +153,7 @@ export default function HomePage() {
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-4">
                 <Button
                   variant="secondary"
                   size="lg"

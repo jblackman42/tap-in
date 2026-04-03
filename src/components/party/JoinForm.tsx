@@ -74,28 +74,34 @@ export function JoinForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="text-center">
-        <p className="text-xs font-semibold uppercase tracking-wider text-violet-600 mb-1">
-          Tap In
-        </p>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div>
         {isHost ? (
           <>
-            <h2 className="text-xl font-bold text-gray-900">Your profile</h2>
-            <p className="text-gray-500 text-sm mt-1">
+            <h2 className="font-headline font-bold text-4xl uppercase tracking-tighter text-foreground leading-none rotate-[-1deg] mb-2">
+              Your profile
+            </h2>
+            <p className="font-body text-sm text-outline leading-relaxed">
               How you&apos;ll appear in the lobby. You&apos;ll get a party code
               after this step.
             </p>
           </>
         ) : (
           <>
-            <h2 className="text-xl font-bold text-gray-900 mb-1">Join a party</h2>
-            <p className="text-gray-500">
-              Party code{" "}
-              <span className="font-mono font-bold tracking-wider text-violet-600">
-                {partyCode}
-              </span>
-            </p>
+            <h2 className="font-headline font-bold text-5xl uppercase tracking-tighter leading-[0.9] rotate-[-2deg] mb-3">
+              Join a{" "}
+              <span className="text-primary block">party</span>
+            </h2>
+            {partyCode && (
+              <div className="backdrop-blur-sm bg-surface-lowest/60 rounded-tr-[40px] rounded-bl-[40px] rounded-tl-lg rounded-br-lg p-6 border-4 border-foreground shadow-[8px_8px_0px_0px_#1c1b1b] mt-4">
+                <p className="font-label text-foreground text-[10px] uppercase tracking-[0.2em] font-bold mb-1 opacity-60">
+                  Party code
+                </p>
+                <span className="font-headline font-bold text-5xl text-primary tracking-widest">
+                  {partyCode}
+                </span>
+              </div>
+            )}
           </>
         )}
       </div>
@@ -151,7 +157,7 @@ export function JoinForm({
         );
       })}
 
-      <Button type="submit" size="lg" className="w-full" disabled={loading}>
+      <Button type="submit" size="lg" className="w-full py-5 text-xl" disabled={loading}>
         {submitLabel}
       </Button>
 

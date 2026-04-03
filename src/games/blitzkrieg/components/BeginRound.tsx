@@ -44,31 +44,33 @@ export function BeginRound({
   const isFirstRound = round === 1;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh bg-white px-6 py-12 text-center gap-8">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-violet-600 mb-2">
+    <div className="flex flex-col items-center justify-center min-h-svh bg-[#1c1b1b] px-6 py-12 text-center gap-8 relative">
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03] memphis-dots" />
+      <div className="relative z-10 space-y-3">
+        <span className="inline-block bg-tertiary-container text-foreground px-4 py-1 rounded-full font-label font-bold text-xs uppercase tracking-widest">
           {isFirstRound ? "Get Ready" : `Round ${round}`}
-        </p>
-        <h1 className="text-3xl font-bold text-gray-900">
+        </span>
+        <h1 className="font-headline font-bold text-5xl text-white uppercase tracking-tighter">
           {isFirstRound ? "Blitzkrieg" : "Next Round"}
         </h1>
-        <p className="text-gray-500 mt-2 text-sm max-w-xs mx-auto">
+        <p className="text-white/50 text-sm max-w-xs mx-auto font-body">
           Get rid of your Blitz pile first — you win the round!
         </p>
       </div>
 
-      {/* Show scores if not first round */}
       {!isFirstRound && players.length > 0 && (
-        <div className="w-full max-w-xs space-y-1">
+        <div className="w-full max-w-xs space-y-2 relative z-10">
           {players
             .sort((a, b) => (scores[b.id] ?? 0) - (scores[a.id] ?? 0))
-            .map((p) => (
+            .map((p, i) => (
               <div
                 key={p.id}
-                className="flex justify-between px-3 py-1.5 rounded-lg bg-gray-50 text-sm"
+                className={`flex justify-between px-4 py-2 rounded-xl text-sm font-label ${
+                  i === 0 ? "bg-tertiary-container/20 border border-tertiary-container/30" : "bg-white/5"
+                }`}
               >
-                <span className="text-gray-700">{p.name}</span>
-                <span className="font-bold text-violet-600 tabular-nums">
+                <span className="text-white/80">{p.name}</span>
+                <span className="font-bold text-tertiary-container tabular-nums">
                   {scores[p.id] ?? 0}
                 </span>
               </div>
@@ -76,18 +78,20 @@ export function BeginRound({
         </div>
       )}
 
-      {isStarter ? (
-        <Button size="lg" className="w-full max-w-xs" onClick={onBeginRound}>
-          Begin Round
-        </Button>
-      ) : (
-        <p className="text-gray-400 text-sm">
-          Waiting for {starterName} to start the round...
-        </p>
-      )}
+      <div className="relative z-10 w-full max-w-xs">
+        {isStarter ? (
+          <Button size="lg" className="w-full" onClick={onBeginRound}>
+            Begin Round
+          </Button>
+        ) : (
+          <p className="text-white/40 text-sm font-label">
+            Waiting for {starterName} to start the round...
+          </p>
+        )}
+      </div>
 
       {countdown <= SHOW_COUNTDOWN_AT && countdown > 0 && (
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-white/30 font-label relative z-10">
           Auto-starting in {countdown}s
         </p>
       )}

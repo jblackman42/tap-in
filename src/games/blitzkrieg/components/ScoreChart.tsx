@@ -2,7 +2,7 @@
 
 import type { Player } from "@/lib/party/types";
 
-const CHART_COLORS = ["#7c3aed", "#ef4444", "#3b82f6", "#10b981"];
+const CHART_COLORS = ["#c3f400", "#bb0058", "#006970", "#ff3d91"];
 
 interface ScoreChartProps {
   players: Player[];
@@ -49,11 +49,11 @@ export function ScoreChart({ players, scoreHistory }: ScoreChartProps) {
         y1={y(75)}
         x2={width - pad.right}
         y2={y(75)}
-        stroke="#d4d4d8"
+        stroke="rgba(255,255,255,0.15)"
         strokeDasharray="4 2"
         strokeWidth={1}
       />
-      <text x={pad.left - 4} y={y(75) + 3} textAnchor="end" fontSize={8} fill="#a1a1aa">
+      <text x={pad.left - 4} y={y(75) + 3} textAnchor="end" fontSize={8} fill="rgba(255,255,255,0.3)">
         75
       </text>
 
@@ -64,7 +64,7 @@ export function ScoreChart({ players, scoreHistory }: ScoreChartProps) {
           y1={y(0)}
           x2={width - pad.right}
           y2={y(0)}
-          stroke="#e5e7eb"
+          stroke="rgba(255,255,255,0.1)"
           strokeWidth={0.5}
         />
       )}
@@ -109,7 +109,7 @@ export function ScoreChart({ players, scoreHistory }: ScoreChartProps) {
           y={height - 4}
           textAnchor="middle"
           fontSize={8}
-          fill="#a1a1aa"
+          fill="rgba(255,255,255,0.3)"
         >
           {i + 1}
         </text>

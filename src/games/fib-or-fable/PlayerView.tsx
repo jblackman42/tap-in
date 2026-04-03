@@ -99,12 +99,14 @@ export function FibOrFablePlayerView({
     const myRejection = state.rejections?.[playerId] ?? null;
 
     return (
-      <div className="flex-1 flex flex-col px-1 pt-4">
-        <TimerBar
-          timerEndsAt={state.timerEndsAt}
-          isHost={isHost}
-          onTimerExpired={handleTimerExpired}
-        />
+      <div className="flex-1 flex flex-col px-1 pt-4 min-h-0">
+        <div className="pr-14">
+          <TimerBar
+            timerEndsAt={state.timerEndsAt}
+            isHost={isHost}
+            onTimerExpired={handleTimerExpired}
+          />
+        </div>
         {hasSubmitted ? (
           <WaitingScreen
             playersSubmitted={state.playersSubmitted.length}

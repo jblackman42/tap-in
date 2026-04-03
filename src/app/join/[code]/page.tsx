@@ -4,11 +4,9 @@ import { use, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { nanoid } from "nanoid";
 import "@/games/registry";
-import { getAllGames } from "@/lib/engine/registry";
 import { savePartySession } from "@/lib/party/session";
 import { recordRecentPartyFromSession } from "@/lib/party/recentParties";
 import { JoinForm } from "@/components/party/JoinForm";
-import type { JoinField } from "@/lib/engine/types";
 
 export default function JoinPage({
   params,
@@ -23,10 +21,6 @@ export default function JoinPage({
     () => true,
     () => false,
   );
-
-  const allGames = getAllGames();
-  const defaultFields: JoinField[] =
-    allGames.length > 0 ? allGames[0].joinFields : [];
 
   function handleJoin(name: string, data: Record<string, unknown>) {
     setLoading(true);
@@ -47,21 +41,25 @@ export default function JoinPage({
 
   if (!mounted) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-svh bg-white px-4 py-12">
+      <div className="flex flex-col items-center justify-center min-h-svh bg-surface px-6 py-12 relative z-10">
         <div className="w-full max-w-sm text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">Tap In</h1>
-          <p className="text-gray-500">Loading...</p>
+          <h1 className="font-headline font-bold text-3xl italic tracking-tighter text-primary drop-shadow-[4px_4px_0px_#006970] uppercase">
+            Tap In
+          </h1>
+          <p className="font-label text-outline uppercase tracking-widest text-sm mt-2">
+            Loading...
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh bg-white px-4 py-12">
+    <div className="flex flex-col items-center justify-center min-h-svh bg-surface px-6 py-12 relative z-10">
       <div className="w-full max-w-sm">
         <JoinForm
           variant="join"
-          fields={defaultFields}
+          fields={[]}
           partyCode={code}
           onSubmit={handleJoin}
           loading={loading}

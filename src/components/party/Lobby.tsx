@@ -37,9 +37,12 @@ export function Lobby({
       {isHost && <QRCodeDisplay code={partyCode} />}
 
       {game && (
-        <div className="text-center">
-          <p className="text-sm text-gray-500">Playing</p>
-          <p className="text-xl font-bold text-gray-900">{game.name}</p>
+        <div className="flex justify-center">
+          <div className="bg-tertiary-container text-foreground px-6 py-2 rounded-full rotate-[-2deg] shadow-[4px_4px_0px_#1c1b1b] flex items-center gap-2">
+            <span className="font-headline font-bold text-lg uppercase">
+              Playing: {game.name}
+            </span>
+          </div>
         </div>
       )}
 
@@ -50,37 +53,38 @@ export function Lobby({
           isHost={isHost}
         />
       ) : (
-        <PlayerList players={players} currentPlayerId={currentPlayerId} />
+        <>
+          <PlayerList players={players} currentPlayerId={currentPlayerId} />
+          {!isHost && (
+            <p className="text-center font-label text-outline text-sm uppercase tracking-wider">
+              Waiting for the host to start the game...
+            </p>
+          )}
+        </>
       )}
 
       {isHost && game && (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {players.length < game.minPlayers && (
-            <p className="text-sm text-center text-amber-600">
+            <p className="text-sm text-center font-label font-bold text-primary">
               Need at least {game.minPlayers} players to start
               ({players.length}/{game.minPlayers})
             </p>
           )}
           {players.length > game.maxPlayers && (
-            <p className="text-sm text-center text-red-600">
+            <p className="text-sm text-center font-label font-bold text-error">
               Too many players (max {game.maxPlayers})
             </p>
           )}
           <Button
             size="lg"
-            className="w-full"
+            className="w-full py-6 text-2xl"
             disabled={!canStart}
             onClick={onStartGame}
           >
             Start Game
           </Button>
         </div>
-      )}
-
-      {!isHost && (
-        <p className="text-center text-gray-400 text-sm">
-          Waiting for the host to start the game...
-        </p>
       )}
     </div>
   );

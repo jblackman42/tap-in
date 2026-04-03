@@ -58,18 +58,18 @@ export function RevealPhase({
   return (
     <div className="flex-1 flex flex-col py-4">
       <div className="flex items-center justify-between mb-4">
-        <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold">
+        <span className="inline-block bg-amber-500 text-white font-label font-bold text-[10px] uppercase tracking-[0.15em] px-3 py-1 rounded-full shadow-[3px_3px_0px_0px_#92400e]">
           Round {round}
         </span>
-        <span className="text-xs text-gray-400 tabular-nums">
+        <span className="text-xs text-outline font-label tabular-nums">
           Question {questionIndex + 1}/{totalQuestions}
         </span>
       </div>
 
-      <div className="bg-amber-50 rounded-2xl px-5 py-4 mb-2">
-        <p className="text-base font-semibold text-amber-950 text-center leading-relaxed">
+      <div className="bg-amber-50 rounded-tl-[2rem] rounded-br-[2rem] rounded-tr-xl rounded-bl-xl px-6 py-5 mb-2 border-4 border-foreground shadow-[8px_8px_0px_0px_#92400e]">
+        <p className="text-base font-headline font-bold text-foreground text-center leading-relaxed">
           {parts[0]}
-          <span className="font-black text-green-700 underline decoration-green-400 decoration-2 underline-offset-2">
+          <span className="font-bold text-green-700 underline decoration-green-400 decoration-2 underline-offset-2">
             {question.truthAnswer}
           </span>
           {parts[1]}
@@ -77,8 +77,8 @@ export function RevealPhase({
       </div>
 
       {question.nobodyGotIt && (
-        <div className="bg-red-50 rounded-xl px-4 py-2 mb-3 text-center">
-          <p className="text-sm font-bold text-red-600">
+        <div className="bg-primary/10 border-4 border-primary/30 wobbly-br-2 px-4 py-2 mb-3 text-center">
+          <p className="text-sm font-headline font-bold text-primary uppercase">
             Nobody got it!
           </p>
         </div>
@@ -98,37 +98,37 @@ export function RevealPhase({
           return (
             <div
               key={answer.answerId}
-              className={`rounded-xl border-2 px-4 py-3 transition-all ${
+              className={`px-5 py-4 transition-all border-4 ${
                 answer.isTruth
-                  ? "border-green-500 bg-green-50"
+                  ? "border-green-500 bg-green-50 wobbly-br-1 shadow-[6px_6px_0px_0px_#15803d]"
                   : foolCount > 0
-                    ? "border-amber-400 bg-amber-50/50"
-                    : "border-gray-200 bg-white"
+                    ? "border-amber-400 bg-amber-50/50 wobbly-br-2 shadow-[4px_4px_0px_0px_#92400e]"
+                    : "border-foreground/10 bg-surface-low wobbly-br-3"
               }`}
             >
               <div className="flex items-start gap-3">
                 <span
-                  className={`shrink-0 w-7 h-7 rounded-full font-bold flex items-center justify-center text-xs ${
+                  className={`shrink-0 w-8 h-8 rounded-xl border-2 border-foreground font-headline font-bold flex items-center justify-center text-xs ${
                     answer.isTruth
                       ? "bg-green-500 text-white"
                       : foolCount > 0
                         ? "bg-amber-500 text-white"
-                        : "bg-gray-100 text-gray-500"
+                        : "bg-surface-highest text-foreground"
                   }`}
                 >
                   {ANSWER_LABELS[i]}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-gray-900 font-medium break-words">
+                  <p className="text-foreground font-body font-semibold break-words">
                     {answer.text || "…"}
                   </p>
 
                   {answer.isTruth ? (
-                    <p className="text-xs font-bold text-green-700 mt-1">
-                      THE TRUTH
+                    <p className="text-xs font-headline font-bold text-green-700 mt-1 uppercase">
+                      The Truth
                     </p>
                   ) : (
-                    <p className="text-xs font-semibold text-amber-700 mt-1">
+                    <p className="text-xs font-headline font-bold text-amber-700 mt-1">
                       — {authorNames}
                       {foolCount > 0 && (
                         <span className="ml-1 text-amber-600">
@@ -143,10 +143,10 @@ export function RevealPhase({
                       {voters.map((vid) => (
                         <span
                           key={vid}
-                          className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                          className={`text-xs px-2.5 py-0.5 rounded-full font-label font-bold ${
                             answer.isTruth
-                              ? "bg-green-100 text-green-800"
-                              : "bg-red-100 text-red-700"
+                              ? "bg-green-100 text-green-800 border border-green-300"
+                              : "bg-primary/10 text-primary border border-primary/20"
                           }`}
                         >
                           {getPlayerName(vid)}
@@ -176,7 +176,7 @@ export function RevealPhase({
       )}
 
       {!isHost && (
-        <p className="text-center text-xs text-gray-400 mt-4">
+        <p className="text-center text-xs text-outline font-label mt-4 uppercase tracking-wider">
           Host will advance…
         </p>
       )}

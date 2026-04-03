@@ -12,10 +12,10 @@ interface BlitzPileProps {
 }
 
 function getBadgeColor(count: number): string {
-  if (count <= 1) return "bg-red-500 animate-pulse";
-  if (count === 2) return "bg-red-500";
-  if (count === 3) return "bg-amber-500";
-  return "bg-gray-600";
+  if (count <= 1) return "bg-primary animate-pulse shadow-[0_0_12px_rgba(187,0,88,0.6)]";
+  if (count === 2) return "bg-primary shadow-[0_0_8px_rgba(187,0,88,0.4)]";
+  if (count === 3) return "bg-tertiary";
+  return "bg-[#555] shadow-[0_0_6px_rgba(85,85,85,0.4)]";
 }
 
 export function BlitzPile({
@@ -34,11 +34,13 @@ export function BlitzPile({
         <motion.div
           initial={{ opacity: 0.8, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-14 h-20 rounded-lg border-2 border-dashed border-green-400 bg-green-50 flex items-center justify-center text-green-500 text-xs font-bold"
+          className="w-20 h-28 rounded-2xl border-4 border-dashed border-tertiary-container bg-tertiary/20 flex items-center justify-center shadow-[6px_6px_0px_0px_#506600]"
         >
-          BLITZ!
+          <span className="font-headline font-bold text-tertiary-container text-xl uppercase tracking-tighter">
+            BLITZ!
+          </span>
         </motion.div>
-        <span className="text-[10px] text-gray-400 font-medium">Blitz</span>
+        <span className="text-[10px] text-white/40 font-label font-bold uppercase tracking-widest">Blitz</span>
       </div>
     );
   }
@@ -48,9 +50,9 @@ export function BlitzPile({
       <div className="relative">
         {count > 1 && (
           <>
-            <div className="absolute top-1 left-0.5 z-0 w-14 h-20 rounded-lg bg-gray-300 opacity-40" />
+            <div className="absolute top-1 left-0.5 z-0 w-20 h-28 rounded-2xl bg-white/10" />
             {count > 2 && (
-              <div className="absolute top-2 left-1 z-0 w-14 h-20 rounded-lg bg-gray-300 opacity-20" />
+              <div className="absolute top-2 left-1 z-0 w-20 h-28 rounded-2xl bg-white/5" />
             )}
           </>
         )}
@@ -60,7 +62,7 @@ export function BlitzPile({
             layoutId={topCard ? cardLayoutId(topCard) : undefined}
             suit={topCard?.suit}
             number={topCard?.number}
-            size="md"
+            size="lg"
             state={isSelected ? "selected" : "default"}
             accessibilityMode={accessibilityMode}
             onClick={onSelect}
@@ -69,16 +71,17 @@ export function BlitzPile({
 
         <div
           className={`
-            absolute -top-2 -right-2 min-w-5 h-5 px-1
+            absolute -top-2 -right-2 min-w-6 h-6 px-1.5
             rounded-full flex items-center justify-center
-            text-[10px] font-bold text-white z-20
+            text-xs font-headline font-bold text-white z-20
+            border-2 border-foreground
             ${getBadgeColor(count)}
           `}
         >
           {count}
         </div>
       </div>
-      <span className="text-[10px] text-gray-400 font-medium">Blitz</span>
+      <span className="text-[10px] text-white/40 font-label font-bold uppercase tracking-widest">Blitz</span>
     </div>
   );
 }

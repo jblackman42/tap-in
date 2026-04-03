@@ -14,9 +14,12 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const selectId = id || props.name;
 
     return (
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-2">
         {label && (
-          <label htmlFor={selectId} className="text-sm font-medium text-gray-700">
+          <label
+            htmlFor={selectId}
+            className="font-headline font-bold text-sm uppercase tracking-tight pl-1 text-foreground"
+          >
             {label}
           </label>
         )}
@@ -24,11 +27,15 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={selectId}
           className={`
-            w-full px-3 py-2.5 rounded-xl border border-gray-300
-            text-gray-900 bg-white
-            focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent
-            transition-shadow duration-150
-            ${error ? "border-red-400 ring-1 ring-red-400" : ""}
+            w-full px-4 py-3 border-4 border-foreground appearance-none
+            rounded-tr-lg rounded-bl-lg rounded-tl-[24px] rounded-br-[24px]
+            text-foreground font-body font-semibold
+            bg-surface-lowest
+            focus:outline-none focus:border-tertiary
+            focus:-translate-y-0.5 focus:-translate-x-0.5
+            focus:shadow-[4px_4px_0px_0px_#506600]
+            transition-all duration-150
+            ${error ? "border-error shadow-[4px_4px_0px_0px_#ba1a1a]" : ""}
             ${className}
           `}
           {...props}
@@ -44,7 +51,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           ))}
         </select>
-        {error && <p className="text-sm text-red-500">{error}</p>}
+        {error && (
+          <p className="text-sm font-label font-bold text-error pl-1">{error}</p>
+        )}
       </div>
     );
   },

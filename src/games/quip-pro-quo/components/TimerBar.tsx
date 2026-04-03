@@ -44,15 +44,18 @@ export function TimerBar({ timerEndsAt, isHost, onTimerExpired }: TimerBarProps)
 
   return (
     <div className="w-full space-y-1">
-      <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+      <div className="h-2 bg-surface-highest rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-100 ${
-            isLow ? "bg-red-500" : "bg-violet-500"
+            isLow ? "bg-primary" : "bg-[#ff3d91]"
           }`}
-          style={{ width: `${progress * 100}%` }}
+          style={{
+            width: `${progress * 100}%`,
+            boxShadow: isLow ? "0 0 15px rgba(187,0,88,0.6)" : "0 0 10px rgba(255,61,145,0.4)",
+          }}
         />
       </div>
-      <p className={`text-xs text-right tabular-nums ${isLow ? "text-red-500 font-semibold" : "text-gray-400"}`}>
+      <p className={`text-xs text-right tabular-nums font-label font-bold ${isLow ? "text-primary" : "text-outline"}`}>
         {remaining}s
       </p>
     </div>

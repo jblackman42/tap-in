@@ -72,8 +72,8 @@ export function WritingPhase({
     return (
       <div className="flex-1 flex flex-col items-center justify-center">
         <div className="text-center">
-          <p className="text-2xl font-bold text-amber-600">Locked in!</p>
-          <p className="text-sm text-gray-400 mt-1">
+          <p className="text-3xl font-headline font-bold text-amber-500 uppercase">Locked in!</p>
+          <p className="text-sm text-outline font-body mt-1">
             {currentIndex + 1 < questions.length
               ? "Next question coming up…"
               : "All lies submitted!"}
@@ -86,23 +86,23 @@ export function WritingPhase({
   const parts = question.factText.split("___");
 
   return (
-    <div className="flex-1 flex flex-col py-4">
-      <div className="flex items-center justify-between mt-3 mb-4">
-        <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold">
+    <div className="flex-1 flex flex-col py-4 min-h-0 overflow-y-auto">
+      <div className="flex items-center justify-between mt-3 mb-4 pr-14">
+        <span className="inline-block bg-amber-500 text-white font-label font-bold text-[10px] uppercase tracking-[0.15em] px-3 py-1 rounded-full shadow-[3px_3px_0px_0px_#92400e]">
           Round {round}
         </span>
-        <span className="text-xs text-gray-400 tabular-nums">
+        <span className="text-xs text-outline font-label tabular-nums">
           Question {currentIndex + 1} of {questions.length}
         </span>
       </div>
 
-      <div className="bg-amber-50 rounded-2xl px-5 py-6 mb-4">
-        <p className="text-sm text-amber-700/80 font-medium text-center mb-3 uppercase tracking-wider">
+      <div className="bg-amber-50 rounded-tl-[2rem] rounded-br-[2rem] rounded-tr-xl rounded-bl-xl px-6 py-7 mb-4 border-4 border-foreground shadow-[8px_8px_0px_0px_#92400e]">
+        <p className="text-sm text-amber-700 font-label font-bold text-center mb-3 uppercase tracking-widest">
           Fill in the blank
         </p>
-        <p className="text-lg font-semibold text-amber-950 text-center leading-relaxed">
+        <p className="text-lg font-headline font-bold text-foreground text-center leading-relaxed">
           {parts[0]}
-          <span className="inline-block mx-1 border-b-2 border-amber-400 min-w-[4ch] text-amber-400">
+          <span className="inline-block mx-1 border-b-4 border-amber-400 min-w-[4ch] text-amber-400">
             {draft || "___"}
           </span>
           {parts[1]}
@@ -110,21 +110,20 @@ export function WritingPhase({
       </div>
 
       {activeRejection ? (
-        <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-4 text-center">
-          <p className="text-sm font-semibold text-red-600">
+        <div className="bg-error-container border-4 border-error/30 wobbly-br-2 px-5 py-4 mb-4 text-center">
+          <p className="text-sm font-headline font-bold text-error uppercase">
             {activeRejection.reason}
           </p>
         </div>
       ) : (
-        <p className="text-xs text-gray-500 text-center mb-4 leading-relaxed">
+        <p className="text-xs text-outline font-label text-center mb-4 leading-relaxed uppercase tracking-wider">
           Write something believable to fool the others.
-          The truth is hidden among the lies!
         </p>
       )}
 
-      <div className="space-y-2 mt-auto">
+      <div className="space-y-2">
         <textarea
-          className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-shadow resize-none"
+          className="w-full px-4 py-3 border-4 border-foreground rounded-tl-lg rounded-br-lg rounded-tr-[24px] rounded-bl-[24px] text-foreground font-body font-semibold placeholder:text-outline-variant bg-surface-lowest focus:outline-none focus:border-amber-500 focus:shadow-[4px_4px_0px_0px_#92400e] transition-all resize-none"
           rows={2}
           maxLength={MAX_CHARS}
           placeholder="Type your fake answer…"
@@ -134,8 +133,8 @@ export function WritingPhase({
         />
         <div className="flex items-center justify-between">
           <span
-            className={`text-xs tabular-nums ${
-              draft.length >= MAX_CHARS ? "text-red-500" : "text-gray-400"
+            className={`text-xs tabular-nums font-label font-bold ${
+              draft.length >= MAX_CHARS ? "text-primary" : "text-outline"
             }`}
           >
             {draft.length}/{MAX_CHARS}

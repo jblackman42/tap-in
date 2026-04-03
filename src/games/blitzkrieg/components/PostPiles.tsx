@@ -3,9 +3,8 @@
 import { cardLayoutId, type Card, type SelectedCard } from "../types";
 import { GameCard } from "./Card";
 
-/** px: bottom offset per card from table bottom; higher cards sit higher + z-index */
 const STACK_STEP_PX = 12;
-const SM_CARD_H_PX = 56; // Tailwind h-14
+const SM_CARD_H_PX = 56;
 
 interface PostPilesProps {
   piles: Card[][];
@@ -34,7 +33,7 @@ export function PostPiles({
           return (
             <div
               key={`post-${i}`}
-              className="w-10 h-14 rounded-lg border border-dashed border-gray-300 bg-gray-50/50 shrink-0"
+              className="w-10 h-14 rounded-lg border border-dashed border-white/20 bg-white/5 shrink-0"
             />
           );
         }

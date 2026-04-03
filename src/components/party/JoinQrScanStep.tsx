@@ -45,7 +45,6 @@ function JoinQrScanStep({ onValidCode, onBack }: JoinQrScanStepProps) {
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [starting, setStarting] = useState(true);
   const scannerRef = useRef<Html5Qrcode | null>(null);
-  /** Previous effect’s full teardown (stop + DOM); next run awaits this first. */
   const teardownChainRef = useRef(Promise.resolve());
   const doneRef = useRef(false);
   const lastInvalidToastAt = useRef(0);
@@ -90,8 +89,8 @@ function JoinQrScanStep({ onValidCode, onBack }: JoinQrScanStepProps) {
       const now = Date.now();
       if (now - lastInvalidToastAt.current > 2500) {
         lastInvalidToastAt.current = now;
-        toast.error("That isn’t a Tap In party QR code", {
-          description: "Try scanning the code from the host’s screen.",
+        toast.error("That isn't a Tap In party QR code", {
+          description: "Try scanning the code from the host's screen.",
         });
       }
     };
@@ -206,17 +205,19 @@ function JoinQrScanStep({ onValidCode, onBack }: JoinQrScanStepProps) {
   }, [readerId]);
 
   return (
-    <div className="min-h-svh flex flex-col bg-white px-4 pt-8 pb-12">
-      <div className="w-full max-w-2xl mx-auto flex flex-col flex-1">
+    <div className="min-h-svh flex flex-col bg-surface px-6 pt-8 pb-12 relative z-10">
+      <div className="w-full max-w-md mx-auto flex flex-col flex-1">
         <div className="flex items-center gap-3 mb-6">
           <Button variant="ghost" size="sm" type="button" onClick={onBack}>
             Back
           </Button>
         </div>
 
-        <div className="text-center mb-4">
-          <h1 className="text-xl font-bold text-violet-950">Scan party QR</h1>
-          <p className="text-sm text-violet-700/90 mt-2 leading-relaxed">
+        <div className="mb-6 w-full">
+          <h1 className="font-headline font-bold text-5xl uppercase tracking-tighter text-foreground leading-none mb-3 rotate-[-1deg]">
+            Scan <span className="text-primary italic">party</span> QR
+          </h1>
+          <p className="font-body text-sm font-medium text-outline leading-relaxed">
             Allow camera access when prompted, then point at the QR code on the
             host&apos;s screen.
           </p>
@@ -225,21 +226,21 @@ function JoinQrScanStep({ onValidCode, onBack }: JoinQrScanStepProps) {
         <div className="flex-1 flex flex-col items-center justify-center min-h-[280px]">
           {cameraError ? (
             <div className="text-center space-y-4 max-w-md">
-              <p className="text-red-600 text-sm">{cameraError}</p>
+              <p className="text-error text-sm font-label font-bold">{cameraError}</p>
               <Button variant="secondary" onClick={onBack}>
                 Go back
               </Button>
             </div>
           ) : (
-            <>
-              <div
-                id={readerId}
-                className="join-qr-reader w-full max-w-[min(100%,320px)] overflow-hidden rounded-2xl bg-black/5 [&_video]:rounded-2xl [&_video~video]:hidden [&_canvas]:hidden!"
-              />
-              {starting && (
-                <p className="text-sm text-violet-400 mt-4">Starting camera…</p>
-              )}
-            </>
+            <div
+              id={readerId}
+              className="join-qr-reader w-full max-w-[min(100%,320px)] overflow-hidden rounded-2xl bg-black/5 [&_video]:rounded-2xl [&_video~video]:hidden [&_canvas]:hidden!"
+            />
+          )}
+          {starting && !cameraError && (
+            <p className="font-label font-bold text-outline tracking-widest text-xs uppercase mt-6 animate-pulse">
+              Starting camera…
+            </p>
           )}
         </div>
       </div>

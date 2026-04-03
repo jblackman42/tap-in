@@ -8,17 +8,17 @@ interface VoteBarProps {
 
 export function VoteBar({ count, maxCount, color = "violet" }: VoteBarProps) {
   const width = maxCount > 0 ? (count / maxCount) * 100 : 0;
-  const bg = color === "violet" ? "bg-violet-500" : "bg-amber-500";
+  const bg = color === "violet" ? "bg-[#ff3d91]" : "bg-secondary";
 
   return (
     <div className="flex items-center gap-2">
-      <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
+      <div className="flex-1 h-3 bg-surface-highest rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-500 ease-out ${bg}`}
           style={{ width: `${width}%` }}
         />
       </div>
-      <span className="text-sm font-bold tabular-nums text-gray-700 w-6 text-right">
+      <span className="text-sm font-headline font-bold tabular-nums text-foreground w-6 text-right">
         {count}
       </span>
     </div>

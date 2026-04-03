@@ -29,44 +29,44 @@ export function RoundSummary({
   return (
     <div className="flex-1 flex flex-col py-6">
       <div className="text-center mb-6">
-        <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">
+        <span className="inline-block bg-tertiary-container text-foreground font-label font-bold text-[10px] uppercase tracking-[0.15em] px-3 py-1 rounded-full shadow-[3px_3px_0px_0px_#506600] mb-3">
           End of Round {state.round}
-        </p>
-        <h2 className="text-2xl font-bold text-gray-900 mt-1">Standings</h2>
+        </span>
+        <h2 className="text-3xl font-headline font-bold text-foreground uppercase tracking-tighter">Standings</h2>
       </div>
 
-      <div className="space-y-2 flex-1">
+      <div className="space-y-3 flex-1">
         {sorted.map(([id, totalScore], idx) => {
           const roundScore = state.roundScores[id]?.[state.round - 1] ?? 0;
 
           return (
             <div
               key={id}
-              className={`flex items-center justify-between px-4 py-3 rounded-xl ${
+              className={`flex items-center justify-between px-5 py-4 border-4 ${
                 idx === 0
-                  ? "bg-violet-50 ring-2 ring-violet-400"
-                  : "bg-gray-50"
+                  ? "bg-[#ff3d91]/10 border-[#ff3d91] wobbly-br-1 shadow-[6px_6px_0px_0px_#bb0058]"
+                  : "bg-surface-low border-foreground/10 wobbly-br-2"
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className="text-lg font-bold text-gray-400 w-6 text-center tabular-nums">
+                <span className="text-xl font-headline font-bold text-outline w-6 text-center tabular-nums">
                   {idx + 1}
                 </span>
-                <span className="font-medium text-gray-900">
+                <span className="font-body font-semibold text-foreground">
                   {getPlayerName(id)}
                   {id === playerId && (
-                    <span className="text-gray-400 ml-1">(you)</span>
+                    <span className="text-outline ml-1 font-label text-xs">(you)</span>
                   )}
                 </span>
               </div>
 
               <div className="flex items-center gap-3">
                 {roundScore > 0 && (
-                  <span className="text-sm font-semibold text-green-600">
+                  <span className="text-sm font-headline font-bold text-tertiary">
                     +{roundScore}
                   </span>
                 )}
-                <span className="text-xl font-bold text-violet-600 tabular-nums">
+                <span className="text-xl font-headline font-bold text-[#ff3d91] tabular-nums">
                   {totalScore}
                 </span>
               </div>
@@ -86,7 +86,7 @@ export function RoundSummary({
       )}
 
       {!isHost && (
-        <p className="text-center text-gray-400 text-sm mt-6">
+        <p className="text-center text-outline font-label text-sm mt-6 uppercase tracking-wider">
           Waiting for the host to start Round {nextRound}…
         </p>
       )}

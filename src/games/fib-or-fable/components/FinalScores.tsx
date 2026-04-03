@@ -41,59 +41,59 @@ export function FinalScores({
   return (
     <div className="flex-1 flex flex-col py-6 overflow-y-auto">
       <div className="text-center mb-8">
-        <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-2">
+        <span className="inline-block bg-amber-500 text-white font-label font-bold text-[10px] uppercase tracking-[0.15em] px-3 py-1 rounded-full shadow-[3px_3px_0px_0px_#92400e] mb-3">
           Game Over
-        </p>
+        </span>
         {isTie ? (
-          <h2 className="text-2xl font-bold text-amber-950">
+          <h2 className="text-3xl font-headline font-bold text-foreground uppercase tracking-tighter">
             It&apos;s a tie!
           </h2>
         ) : (
-          <h2 className="text-3xl font-black text-amber-950">
+          <h2 className="text-4xl font-headline font-bold text-foreground uppercase tracking-tighter">
             {getPlayerName(winners[0][0])} wins!
           </h2>
         )}
-        <p className="text-amber-600 font-bold text-xl mt-1 tabular-nums">
+        <p className="text-amber-500 font-headline font-bold text-2xl mt-1 tabular-nums">
           {topScore} points
         </p>
       </div>
 
-      <div className="space-y-2 flex-1">
+      <div className="space-y-3 flex-1">
         {sorted.map(([id, totalScore], idx) => {
           const roundBreakdown = state.roundScores[id] ?? [];
 
           return (
             <div
               key={id}
-              className={`px-4 py-3 rounded-xl ${
+              className={`px-5 py-4 border-4 ${
                 idx === 0
-                  ? "bg-yellow-50 ring-2 ring-yellow-400"
+                  ? "bg-amber-50 border-amber-500 wobbly-br-1 shadow-[6px_6px_0px_0px_#92400e]"
                   : idx === 1
-                    ? "bg-gray-100 ring-1 ring-gray-300"
+                    ? "bg-surface-high border-foreground/20 wobbly-br-2"
                     : idx === 2
-                      ? "bg-amber-50 ring-1 ring-amber-300"
-                      : "bg-gray-50"
+                      ? "bg-secondary/10 border-secondary/30 wobbly-br-3"
+                      : "bg-surface-low border-foreground/10 rounded-2xl"
               }`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-lg font-bold text-gray-400 w-6 text-center tabular-nums">
+                  <span className="text-xl font-headline font-bold text-outline w-6 text-center tabular-nums">
                     {idx + 1}
                   </span>
-                  <span className="font-medium text-gray-900">
+                  <span className="font-body font-semibold text-foreground">
                     {getPlayerName(id)}
                     {id === playerId && (
-                      <span className="text-gray-400 ml-1">(you)</span>
+                      <span className="text-outline ml-1 font-label text-xs">(you)</span>
                     )}
                   </span>
                 </div>
-                <span className="text-xl font-bold text-amber-600 tabular-nums">
+                <span className="text-xl font-headline font-bold text-amber-500 tabular-nums">
                   {totalScore}
                 </span>
               </div>
 
               {roundBreakdown.length > 0 && (
-                <div className="mt-1.5 ml-9 flex gap-3 text-xs text-gray-500 tabular-nums">
+                <div className="mt-1.5 ml-9 flex gap-3 text-xs text-outline font-label tabular-nums">
                   {roundBreakdown.map((score, ri) => (
                     <span key={ri}>
                       R{ri + 1}: {score}
@@ -109,7 +109,7 @@ export function FinalScores({
       {voterNames.length > 0 && (
         <div className="mt-4 space-y-1">
           {voterNames.map((name) => (
-            <p key={name} className="text-sm text-amber-700 text-center">
+            <p key={name} className="text-sm text-amber-700 text-center font-label font-bold">
               {name} wants to play again!
             </p>
           ))}

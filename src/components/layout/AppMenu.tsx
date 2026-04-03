@@ -54,9 +54,10 @@ function statusLabel(result: PresenceProbeResult | undefined): string {
 
 function statusClass(result: PresenceProbeResult | undefined): string {
   if (result === "active")
-    return "bg-emerald-50 text-emerald-800 ring-emerald-200/80";
-  if (result === "empty") return "bg-amber-50 text-amber-900 ring-amber-200/80";
-  return "bg-violet-50 text-violet-700 ring-violet-200/80";
+    return "bg-tertiary text-white";
+  if (result === "empty")
+    return "bg-secondary-container text-secondary-dark";
+  return "bg-surface-high text-outline";
 }
 
 export function AppMenu() {
@@ -165,7 +166,7 @@ export function AppMenu() {
         aria-label="Open menu"
         aria-expanded={open}
         onClick={handleOpenMenu}
-        className="fixed top-4 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-xl bg-white/90 text-violet-950 shadow-md ring-1 ring-violet-200/80 backdrop-blur-sm hover:bg-violet-50 active:bg-violet-100/80"
+        className="fixed top-4 right-4 z-50 flex h-12 w-12 items-center justify-center bg-tertiary-container text-foreground rounded-full border-4 border-foreground shadow-[4px_4px_0px_0px_#1c1b1b] hover:rotate-2 hover:scale-110 transition-transform active:translate-y-0.5 active:translate-x-0.5"
       >
         <span className="sr-only">Menu</span>
         <svg
@@ -174,7 +175,7 @@ export function AppMenu() {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="2.5"
           strokeLinecap="round"
           aria-hidden
         >
@@ -186,26 +187,28 @@ export function AppMenu() {
 
       {open && (
         <div
-          className="fixed inset-0 z-100 flex flex-col bg-white"
+          className="fixed inset-0 z-100 flex flex-col bg-surface/95 backdrop-blur-md memphis-diag"
           role="dialog"
           aria-modal="true"
           aria-labelledby="app-menu-title"
         >
-          <div className="flex shrink-0 items-center justify-between border-b border-violet-100 bg-white px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
-            <div>
-              <h2
+          <div className="flex shrink-0 items-center justify-between bg-transparent px-6 py-4 pt-[max(1rem,env(safe-area-inset-top))]">
+            <div className="flex flex-col">
+              <span
                 id="app-menu-title"
-                className="text-lg font-semibold text-violet-950"
+                className="text-3xl font-headline font-bold italic tracking-tighter text-primary drop-shadow-[4px_4px_0px_#006970] uppercase"
               >
                 Tap In
-              </h2>
-              <p className="text-xs text-violet-500 mt-0.5">Menu</p>
+              </span>
+              <span className="font-headline font-bold text-xs tracking-[0.2em] uppercase text-secondary">
+                Menu
+              </span>
             </div>
             <button
               type="button"
               aria-label="Close menu"
               onClick={close}
-              className="flex h-11 w-11 items-center justify-center rounded-xl text-violet-700 hover:bg-violet-100 active:bg-violet-200/60"
+              className="flex h-12 w-12 items-center justify-center bg-surface-highest rounded-full border-2 border-foreground hover:rotate-90 transition-transform active:scale-90"
             >
               <svg
                 width="22"
@@ -213,7 +216,7 @@ export function AppMenu() {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="2.5"
                 strokeLinecap="round"
                 aria-hidden
               >
@@ -223,51 +226,53 @@ export function AppMenu() {
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto bg-white px-4 py-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+          <div className="flex-1 overflow-y-auto px-6 py-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
             <div className="mx-auto flex w-full max-w-sm flex-col gap-10">
               {showRecentParties && recent.length > 0 && (
-                <section className="flex flex-col gap-3" aria-label="Recent parties">
-                  <div>
-                    <p className="text-sm font-semibold text-violet-900">
-                      Recent parties
-                    </p>
-                    <p className="text-xs text-violet-500 mt-1 leading-relaxed">
-                      Rejoin with one tap if the room is still up. Status is a
-                      best-effort hint.
+                <section className="flex flex-col gap-4" aria-label="Recent parties">
+                  <div className="space-y-1">
+                    <h2 className="font-headline font-bold text-2xl uppercase tracking-tight text-foreground -rotate-1 origin-left">
+                      Recent Parties
+                    </h2>
+                    <p className="font-label text-sm text-outline leading-tight">
+                      Rejoin with one tap if the room is still up.
                     </p>
                   </div>
-                  <ul className="flex flex-col gap-2">
-                    {recent.map((entry) => {
+                  <ul className="flex flex-col gap-3">
+                    {recent.map((entry, i) => {
                       const gameTitle = entry.gameId
                         ? getGame(entry.gameId)?.name ?? entry.gameId
                         : null;
                       const probe = probeByCode[entry.code];
+                      const shadowColors = ["#506600", "#006970", "#bb0058", "#1c1b1b"];
+                      const shadowColor = shadowColors[i % shadowColors.length];
                       return (
                         <li
                           key={entry.code}
-                          className="rounded-2xl border border-violet-100 bg-white p-4 shadow-sm ring-1 ring-violet-100/60"
+                          className="bg-surface-low p-5 wobbly-br-1 border-4 border-foreground/10 relative overflow-hidden"
+                          style={{ boxShadow: `8px 8px 0px 0px ${shadowColor}20` }}
                         >
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="min-w-0 flex-1">
-                              <p className="font-mono text-lg tracking-[0.2em] text-violet-950">
-                                {entry.code}
-                              </p>
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <span className="bg-foreground text-surface px-2 py-0.5 font-label font-bold text-[10px] tracking-widest uppercase inline-block rounded-sm">
+                                Code: {entry.code}
+                              </span>
                               {gameTitle && (
-                                <p className="text-sm text-violet-700 truncate mt-0.5">
+                                <h3 className="font-headline font-bold text-xl text-foreground uppercase mt-1">
                                   {gameTitle}
-                                </p>
+                                </h3>
                               )}
-                              <p className="text-xs text-violet-500 mt-1">
+                              <p className="font-label text-xs text-outline mt-0.5">
                                 Last here · {formatLastSeen(entry.lastSeenAt)}
                               </p>
-                              <span
-                                className={`mt-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ${statusClass(probe)}`}
-                              >
-                                {statusLabel(probe)}
-                              </span>
                             </div>
+                            <span
+                              className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tighter ${statusClass(probe)}`}
+                            >
+                              {statusLabel(probe)}
+                            </span>
                           </div>
-                          <div className="mt-4 flex gap-2">
+                          <div className="flex gap-3">
                             <Button
                               size="md"
                               className="flex-1"
@@ -278,7 +283,7 @@ export function AppMenu() {
                             <Button
                               size="md"
                               variant="secondary"
-                              className="shrink-0 px-4"
+                              className="shrink-0 px-5"
                               onClick={() => forget(entry)}
                             >
                               Forget
@@ -291,41 +296,44 @@ export function AppMenu() {
                 </section>
               )}
 
-              <section className="flex flex-col gap-3">
-                <p className="text-sm font-semibold text-violet-900">
-                  Join with code
-                </p>
-                <Input
-                  label="Party code"
-                  placeholder="Enter party code"
-                  value={joinCode}
-                  onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-                  className="text-center text-xl tracking-[0.3em] font-mono"
-                  maxLength={6}
-                  autoComplete="off"
-                  autoCorrect="off"
-                  spellCheck={false}
-                />
-                <Button
-                  size="lg"
-                  className="w-full"
-                  onClick={joinWithCode}
-                  disabled={joinCode.trim().length < 4}
-                >
-                  Continue to join
-                </Button>
+              <section className="flex flex-col gap-4">
+                <h2 className="font-headline font-bold text-2xl uppercase tracking-tight text-foreground rotate-1 origin-left">
+                  Join with Code
+                </h2>
+                <div className="bg-surface-highest p-6 rounded-[2rem] border-4 border-foreground shadow-[12px_12px_0px_0px_#bb0058]">
+                  <Input
+                    label="Party code"
+                    placeholder="ENTER CODE"
+                    value={joinCode}
+                    onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
+                    className="text-center text-3xl tracking-[0.5em] font-headline font-bold"
+                    maxLength={6}
+                    autoComplete="off"
+                    autoCorrect="off"
+                    spellCheck={false}
+                  />
+                  <Button
+                    size="lg"
+                    className="w-full mt-4"
+                    variant="secondary"
+                    onClick={joinWithCode}
+                    disabled={joinCode.trim().length < 4}
+                  >
+                    Continue to join
+                  </Button>
+                </div>
               </section>
 
-              <section className="flex flex-col gap-2">
-                <p className="text-sm font-semibold text-violet-900">
+              <section className="flex flex-col gap-3">
+                <h2 className="font-headline font-bold text-2xl uppercase tracking-tight text-foreground -rotate-1">
                   Navigation
-                </p>
+                </h2>
                 {!isHome ? (
                   <Button size="lg" variant="secondary" className="w-full" onClick={goHome}>
                     Home
                   </Button>
                 ) : (
-                  <p className="text-center text-sm text-violet-500 py-2">
+                  <p className="text-center text-sm font-label text-outline py-2">
                     You&apos;re on the home screen.
                   </p>
                 )}
