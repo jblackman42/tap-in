@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { Toaster } from "sonner";
 import { AppMenu } from "./AppMenu";
+import { Analytics } from "@vercel/analytics/react";
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
@@ -26,6 +27,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         }}
       />
       <AppMenu />
+      <Analytics />
     </>
   );
 }
