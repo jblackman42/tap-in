@@ -84,8 +84,8 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-svh flex flex-col bg-surface text-foreground relative z-10">
-      <div className="flex-1 flex flex-col items-center px-6 pt-16 pb-16">
+    <div className="relative flex min-h-full flex-1 flex-col bg-surface text-foreground">
+      <div className="flex-1 flex flex-col items-center px-6 pt-8 pb-16">
         <div className="w-full max-w-md mx-auto flex flex-col items-center text-center gap-3 mb-10">
           <TapInWordmark />
           <div className="transform -rotate-1">

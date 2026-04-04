@@ -205,7 +205,7 @@ function JoinQrScanStep({ onValidCode, onBack }: JoinQrScanStepProps) {
   }, [readerId]);
 
   return (
-    <div className="min-h-svh flex flex-col bg-surface px-6 pt-8 pb-12 relative z-10">
+    <div className="relative flex min-h-full flex-1 flex-col bg-surface px-6 pb-12 pt-8">
       <div className="w-full max-w-md mx-auto flex flex-col flex-1">
         <div className="flex items-center gap-3 mb-6">
           <Button variant="ghost" size="sm" type="button" onClick={onBack}>

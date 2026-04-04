@@ -35,6 +35,8 @@ export interface GameDefinition<
   description: string;
   minPlayers: number;
   maxPlayers: number;
+  /** Remove horizontal padding and max-width constraints from the game shell */
+  fullBleed?: boolean;
 
   joinFields: JoinField[];
 

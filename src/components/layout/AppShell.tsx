@@ -11,7 +11,12 @@ export function AppShell({ children }: { children: ReactNode }) {
       {/* Memphis dot pattern background */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.03] memphis-dots z-0" />
       <div className="fixed inset-0 pointer-events-none opacity-[0.02] memphis-squiggles z-0" />
-      {children}
+      <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col">
+        <AppMenu />
+        <main className="relative z-10 flex min-h-0 w-full flex-1 flex-col">
+          {children}
+        </main>
+      </div>
       <Toaster
         position="top-center"
         closeButton
@@ -26,7 +31,6 @@ export function AppShell({ children }: { children: ReactNode }) {
           },
         }}
       />
-      <AppMenu />
       <Analytics />
     </>
   );

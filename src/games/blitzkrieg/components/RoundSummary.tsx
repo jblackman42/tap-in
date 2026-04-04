@@ -39,7 +39,7 @@ export function RoundSummary({
   const hasReached75 = Object.values(scores).some((s) => s >= 75);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh bg-[#1c1b1b] px-6 py-10 text-center gap-6 relative">
+    <div className="flex flex-col items-center justify-center min-h-full flex-1 bg-[#1c1b1b] px-6 py-10 text-center gap-6 relative">
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] memphis-dots" />
 
       {/* Header */}

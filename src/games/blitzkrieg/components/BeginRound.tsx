@@ -44,7 +44,7 @@ export function BeginRound({
   const isFirstRound = round === 1;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh bg-[#1c1b1b] px-6 py-12 text-center gap-8 relative">
+    <div className="flex flex-col items-center justify-center min-h-full flex-1 bg-[#1c1b1b] px-6 py-12 text-center gap-8 relative">
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] memphis-dots" />
       <div className="relative z-10 space-y-3">
         <span className="inline-block bg-tertiary-container text-foreground px-4 py-1 rounded-full font-label font-bold text-xs uppercase tracking-widest">

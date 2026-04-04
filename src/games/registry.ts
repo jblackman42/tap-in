@@ -3,8 +3,10 @@ import { registerGame } from "@/lib/engine/registry";
 import { blitzkriegGame } from "./blitzkrieg";
 import { quipProQuoGame } from "./quip-pro-quo";
 import { fibOrFableGame } from "./fib-or-fable";
+import { kayakAttackGame } from "./kayak-attack";
 
 // registerGame(hotTakeGame);
 registerGame(blitzkriegGame);
 registerGame(quipProQuoGame);
 registerGame(fibOrFableGame);
+registerGame(kayakAttackGame);

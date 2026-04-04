@@ -259,3 +259,22 @@ body {
 .animate-qpq-countdown {
   animation: qpq-countdown 1s ease-out;
 }
+
+/* ─── Kayak Attack ─────────────────────────────────────────────── */
+
+@keyframes ka-sunk-pulse {
+  0%   { opacity: 1; }
+  40%  { opacity: 0.4; }
+  70%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+.ka-sunk-pulse {
+  animation: ka-sunk-pulse 0.6s ease-out;
+}
+
+@keyframes ka-dot-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40%            { transform: translateY(-4px); opacity: 1; }
+}
+

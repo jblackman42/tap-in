@@ -41,7 +41,7 @@ export default function JoinPage({
 
   if (!mounted) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-svh bg-surface px-6 py-12 relative z-10">
+      <div className="flex min-h-full flex-1 flex-col items-center justify-center bg-surface px-6 py-12">
         <div className="w-full max-w-sm text-center">
           <h1 className="font-headline font-bold text-3xl italic tracking-tighter text-primary drop-shadow-[4px_4px_0px_#006970] uppercase">
             Tap In
@@ -55,7 +55,7 @@ export default function JoinPage({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh bg-surface px-6 py-12 relative z-10">
+    <div className="flex min-h-full flex-1 flex-col items-center justify-center bg-surface px-6 py-12">
       <div className="w-full max-w-sm">
         <JoinForm
           variant="join"

@@ -2,6 +2,8 @@
 
 Tap In is a framework for building phone-based local multiplayer games using Next.js and Supabase Realtime. One person creates a party, shares a QR code, everyone joins on their phones, and the game runs in real time.
 
+**UI styling:** See [`docs/STYLING.md`](docs/STYLING.md) for colors, typography, components, and patterns so new work matches the app.
+
 ## Architecture
 
 ### Three-Layer Design

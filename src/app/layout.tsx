@@ -24,9 +24,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${spaceGrotesk.variable} ${plusJakartaSans.variable} ${splineSans.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${plusJakartaSans.variable} ${splineSans.variable} h-full min-h-svh antialiased`}
     >
-      <body suppressHydrationWarning className="min-h-full flex flex-col font-body">
+      <body suppressHydrationWarning className="flex min-h-svh flex-col font-body">
         <AppShell>{children}</AppShell>
       </body>
     </html>

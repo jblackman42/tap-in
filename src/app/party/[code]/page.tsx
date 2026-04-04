@@ -24,7 +24,7 @@ import type { Player } from "@/lib/party/types";
 
 function ConnectingScreen({ message }: { message: string }) {
   return (
-    <div className="flex items-center justify-center min-h-svh bg-surface px-6 relative z-10">
+    <div className="flex min-h-full flex-1 items-center justify-center bg-surface px-6">
       <p className="font-headline font-bold text-xl text-outline text-center uppercase tracking-wider">
         {message}
       </p>
@@ -148,7 +148,7 @@ export default function PartyPage({
 
   if (!hasSessionForCode) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-svh bg-surface px-6 gap-6 relative z-10">
+      <div className="flex flex-col items-center justify-center min-h-full flex-1 bg-surface px-6 gap-6">
         <div className="w-full max-w-sm text-center space-y-3">
           <h1 className="font-headline font-bold text-2xl uppercase tracking-tight text-foreground">
             No saved session
@@ -189,7 +189,7 @@ export default function PartyPage({
           : "Couldn't reach the party in time.";
 
     return (
-      <div className="flex flex-col items-center justify-center min-h-svh bg-surface px-6 gap-6 relative z-10">
+      <div className="flex flex-col items-center justify-center min-h-full flex-1 bg-surface px-6 gap-6">
         <div className="w-full max-w-sm text-center space-y-3">
           <h1 className="font-headline font-bold text-2xl uppercase tracking-tight text-foreground">
             Couldn&apos;t connect
@@ -228,7 +228,7 @@ export default function PartyPage({
 
   if (partyEnded) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-svh bg-surface px-6 gap-6 relative z-10">
+      <div className="flex flex-col items-center justify-center min-h-full flex-1 bg-surface px-6 gap-6">
         <div className="w-full max-w-sm text-center space-y-3">
           <h1 className="font-headline font-bold text-2xl uppercase tracking-tight text-foreground">
             This party has ended
@@ -255,18 +255,23 @@ export default function PartyPage({
 
   if (isPlaying && game) {
     const GamePlayerView = game.PlayerView;
-    const currentState = isHost
+    const rawState = isHost
       ? engine.state
       : playerEngine.playerState ?? playerEngine.state;
 
-    if (!currentState) {
+    if (!rawState) {
       return <ConnectingScreen message="Loading game…" />;
     }
 
-    const fullBleed = game.id === "blitzkrieg";
+    /** Host runs the reducer on full state but must see the same filtered view as guests (hidden info). */
+    const currentState = isHost
+      ? game.getPlayerView(rawState, playerId ?? "")
+      : rawState;
+
+    const fullBleed = game.fullBleed ?? game.id === "blitzkrieg";
 
     return (
-      <div className={`h-svh min-h-0 overflow-hidden bg-surface flex flex-col relative z-10 ${fullBleed ? "" : "px-4"}`}>
+      <div className={`flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-surface ${fullBleed ? "" : "px-4"}`}>
         <div className={`flex-1 min-h-0 flex flex-col ${fullBleed ? "w-full" : "w-full max-w-sm mx-auto"}`}>
           <GamePlayerView
             state={currentState}
@@ -281,7 +286,7 @@ export default function PartyPage({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh bg-surface px-6 py-12 relative z-10">
+    <div className="flex min-h-full flex-1 flex-col items-center justify-center bg-surface px-6 py-12">
       <div className="w-full max-w-sm">
         <Lobby
           partyCode={code}

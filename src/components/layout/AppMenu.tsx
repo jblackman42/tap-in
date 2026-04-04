@@ -18,7 +18,9 @@ import {
   probePartyPresence,
   type PresenceProbeResult,
 } from "@/lib/party/presenceProbe";
+import Link from "next/link";
 import { getGame } from "@/lib/engine/registry";
+import { TapInWordmark } from "@/components/brand/TapInWordmark";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
@@ -161,29 +163,40 @@ export function AppMenu() {
 
   return (
     <>
-      <button
-        type="button"
-        aria-label="Open menu"
-        aria-expanded={open}
-        onClick={handleOpenMenu}
-        className="fixed top-4 right-4 z-50 flex h-12 w-12 items-center justify-center bg-tertiary-container text-foreground rounded-full border-4 border-foreground shadow-[4px_4px_0px_0px_#1c1b1b] hover:rotate-2 hover:scale-110 transition-transform active:translate-y-0.5 active:translate-x-0.5"
+      <header
+        className="sticky top-0 z-40 flex w-full shrink-0 items-center justify-between gap-3 border-b border-foreground/10 bg-surface/95 px-4 pb-3 pt-[max(0.5rem,env(safe-area-inset-top))] backdrop-blur-md"
       >
-        <span className="sr-only">Menu</span>
-        <svg
-          width="22"
-          height="22"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          aria-hidden
+        <Link
+          href="/"
+          className="min-w-0 shrink text-left focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/40 rounded-sm"
+          aria-label="Tap In — Home"
         >
-          <line x1="4" y1="7" x2="20" y2="7" />
-          <line x1="4" y1="12" x2="20" y2="12" />
-          <line x1="4" y1="17" x2="20" y2="17" />
-        </svg>
-      </button>
+          <TapInWordmark as="span" size="compact" />
+        </Link>
+        <button
+          type="button"
+          aria-label="Open menu"
+          aria-expanded={open}
+          onClick={handleOpenMenu}
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-4 border-foreground bg-tertiary-container text-foreground shadow-[4px_4px_0px_0px_#1c1b1b] transition-transform hover:-translate-y-0.5 active:translate-y-0.5 active:translate-x-0.5 active:shadow-none"
+        >
+          <span className="sr-only">Menu</span>
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            aria-hidden
+          >
+            <line x1="4" y1="7" x2="20" y2="7" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="17" x2="20" y2="17" />
+          </svg>
+        </button>
+      </header>
 
       {open && (
         <div
